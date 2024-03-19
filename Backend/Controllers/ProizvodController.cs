@@ -7,14 +7,12 @@ namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class ProizvodController
+    public class ProizvodController:ControllerBase
     {
-        // Dependency injection
-        // Definiraš privatno svojstvo
+        
         private readonly TekucineContext _context;
 
-        // Dependency injection
-        // U konstruktoru primir instancu i dodjeliš privatnom svojstvu
+        
         public ProizvodController(TekucineContext context)
         {
             _context = context;

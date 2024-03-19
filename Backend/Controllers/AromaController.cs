@@ -6,7 +6,7 @@ namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class AromaController
+    public class AromaController:ControllerBase
     {
         
         private readonly TekucineContext _context;
@@ -21,6 +21,7 @@ namespace Backend.Controllers
         [HttpGet]
         public IActionResult Get()
         {
+
             return new JsonResult(_context.Arome.ToList());
         }
 
