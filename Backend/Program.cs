@@ -11,6 +11,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(opcije =>
+{
+    opcije.AddPolicy("CorsPolicy", builder =>
+    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+    );
+});
+
 
 builder.Services.AddDbContext<TekucineContext>(o => {
     o.UseSqlServer(builder.Configuration.GetConnectionString("TekucineContext"));
@@ -32,6 +39,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors("CorsPolicy");
 
 app.UseStaticFiles();
 app.UseDefaultFiles();
