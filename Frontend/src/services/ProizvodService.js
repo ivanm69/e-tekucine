@@ -14,6 +14,31 @@ async function get(){
 
 }
 
+async function post(proizvod){
+
+    return await HttpService.post(naziv,proizvod)
+    .then((odgovor)=>{
+        return {greska: false,poruka:odgovor.data};
+    })
+    .catch((e)=>{
+        return {greska: true,poruka:e};
+    })
+
+}
+async function _delete(sifraProizvoda){
+
+    return await HttpService.delete(naziv +'/'+sifraProizvoda)
+    .then((odgovor)=>{
+        return {greska: false,poruka:odgovor.data.poruka};
+    })
+    .catch((e)=>{
+        return {greska: true,poruka:e};
+    })
+
+}
 export default{
-    get
+    get,
+    post,
+   _delete
+   
 }
