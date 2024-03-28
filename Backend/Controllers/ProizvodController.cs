@@ -23,6 +23,13 @@ namespace Backend.Controllers
         public IActionResult Get()
         {
             return new JsonResult(_context.Proizvodi.ToList());
+
+        }
+        [HttpGet]
+        [Route("{sifra:int}")]
+        public IActionResult GetBySifra(int sifra)
+        {
+            return new JsonResult(_context.Proizvodi.Find(sifra));
         }
 
         [HttpPost]
