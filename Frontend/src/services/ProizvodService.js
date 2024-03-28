@@ -23,8 +23,21 @@ async function post(proizvod){
     .catch((e)=>{
         return {greska: true,poruka:e};
     })
-
 }
+    async function put(sifra,proizvod){
+
+        return await HttpService.put(naziv+'/'+sifra,proizvod)
+        .then((odgovor)=>{
+            return{greska: false, poruka: odgovor.data};
+        })
+        .catch((e)=>{
+            return {greska: true, poruka: e};
+        })
+    
+    }
+
+
+
 async function _delete(sifraProizvoda){
 
     return await HttpService.delete(naziv +'/'+sifraProizvoda)
@@ -34,11 +47,26 @@ async function _delete(sifraProizvoda){
     .catch((e)=>{
         return {greska: true,poruka:e};
     })
-
 }
+async function getBySifra(sifra){
+
+    return await HttpService.get(naziv+'/'+sifra)
+    .then((o)=>{
+        return {greska: false,poruka:o.data}
+    })
+    .catch((e)=>{
+        return {greska: true,poruka:e};
+    });
+}
+
+
+
+
 export default{
     get,
     post,
-   _delete
+   _delete,
+    getBySifra,
+    put
    
 }

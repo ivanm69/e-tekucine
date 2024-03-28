@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import ProizvodService from '../../services/ProizvodService';
 import { Table,Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { RoutesNames } from '../../constants';
 
 
 
 export default function Proizvodi(){
     const [proizvodi,setProizvodi] = useState();
+    const navigate=useNavigate();
 
     async function dohvatiProizvode(){
     await ProizvodService.get()
@@ -66,6 +67,8 @@ async function obrisiAsync(sifra){
                 <td>
                   <Button onClick={()=>obrisi(proizvod.sifra)}
                   variant='danger'>Obrisi</Button>
+
+                  <Button onClick={()=>{navigate(`/proizvodi/${proizvod.sifra}`)}}>Promjeni</Button>
                 </td>
 
                 </tr>
