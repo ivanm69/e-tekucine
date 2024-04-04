@@ -6,13 +6,12 @@ namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class ProizvodjacController:ControllerBase
+    public class ProizvodjacController : ControllerBase
     {
-        
-        
+
         private readonly TekucineContext _context;
 
-      
+
         public ProizvodjacController(TekucineContext context)
         {
             _context = context;
@@ -23,6 +22,13 @@ namespace Backend.Controllers
         public IActionResult Get()
         {
             return new JsonResult(_context.Proizvodjaci.ToList());
+
+        }
+        [HttpGet]
+        [Route("{sifra:int}")]
+        public IActionResult GetBySifra(int sifra)
+        {
+            return new JsonResult(_context.Proizvodjaci.Find(sifra));
         }
 
         [HttpPost]
@@ -43,6 +49,7 @@ namespace Backend.Controllers
             var proizvodjacIzBaze = _context.Proizvodjaci.Find(sifra);
             proizvodjacIzBaze.Naziv = proizvodjac.Naziv;
             proizvodjacIzBaze.link = proizvodjac.link;
+            
 
 
             _context.Proizvodjaci.Update(proizvodjacIzBaze);

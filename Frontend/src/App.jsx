@@ -8,6 +8,12 @@ import Pocetna from './pages/Pocetna'
 import Proizvodi from './pages/Proizvodi/Proizvodi'
 import ProizvodiDodaj from './pages/Proizvodi/ProizvodiDodaj'
 import ProizvodiPromjena from './pages/Proizvodi/ProizvodiPromjena'
+import Proizvodjaci from './pages/Proizvodjaci/Proizvodjaci'
+import ProizvodjaciDodaj from './pages/Proizvodjaci/ProizvodjaciDodaj'
+import ProizvodjaciPromjena from './pages/Proizvodjaci/ProizvodjaciPromjena'
+
+
+
 
 
 
@@ -22,6 +28,9 @@ function App() {
   <Route path={RoutesNames.PROZIVOD_PREGLED} element={<Proizvodi/>}/>
   <Route path={RoutesNames.PROIZVOD_NOVI} element={<ProizvodiDodaj/>}/>
   <Route path={RoutesNames.PROIZVOD_PROMJENI}element={<ProizvodiPromjena/>}/>
+  <Route path={RoutesNames.PROZIVODJAC_PREGLED} element={<Proizvodjaci/>}/>
+  <Route path={RoutesNames.PROIZVODJAC_NOVI} element={<ProizvodjaciDodaj/>}/>
+  <Route path={RoutesNames.PROIZVODJAC_PROMJENI}element={<ProizvodjaciPromjena/>}/>
       </Routes>           
       
       

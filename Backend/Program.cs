@@ -30,17 +30,6 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{
-app.Use(async (context, next) =>
-{
-    if (context.Request.Path.StartsWithSegments("/swagger"))
-    {
-        context.Response.Redirect("/e-tekucineAPP");
-    }
-    else
-    {
-        await next.Invoke();
-    }
-});
 
 app.UseSwagger();
 app.UseSwaggerUI(o =>
