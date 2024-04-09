@@ -1,76 +1,80 @@
 ﻿
 using Backend.Data;
+using Backend.Mappers;
 using Backend.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class ProizvodController:ControllerBase
+    public class ProizvodController :TekucineController<Proizvod, ProizvodDTORead, ProizvodDTOInsertUpdate>
     {
-        
-        private readonly TekucineContext _context;
-
-        
-        public ProizvodController(TekucineContext context)
+        public ProizvodController(TekucineContext context) : base(context)
         {
-            _context = context;
+            DbSet = _context.Proizvodi; 
+            _mapper = new MappingProizvod();
         }
-
-
-        [HttpGet]
-        public IActionResult Get()
+        protected override void KontrolaBrisanje(Proizvod entitet)
         {
-            return new JsonResult(_context.Proizvodi.ToList());
+            if (entitet != null && entitet.Proizvodjac != null)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("Proizvod se ne može obrisati jer su na njemu proizvodjaci: ");
+                foreach (var e in entitet.Naziv)
+                {
 
+                }
+
+                throw new Exception(sb.ToString()[..^2]);
+            }
         }
-        [HttpGet]
-        [Route("{sifra:int}")]
-        public IActionResult GetBySifra(int sifra)
+
+        protected override Proizvod KreirajEntitet(ProizvodDTOInsertUpdate dto)
         {
-            return new JsonResult(_context.Proizvodi.Find(sifra));
+            var proizvodjac = _context.Proizvodjaci.Find(dto.ProizvodjacSifra) ?? throw new Exception("Ne postoji proizvodjac s šifrom " + dto.ProizvodjacSifra + " u bazi");
+            
+            var entitet = _mapper.MapInsertUpdatedFromDTO(dto);
+            entitet.Proizvodjac = proizvodjac;
+           
+            return entitet;
         }
 
-        [HttpPost]
-
-        public IActionResult Post(Proizvod proizvod) 
-        { 
-         _context.Proizvodi.Add(proizvod);
-         _context.SaveChanges();
-            return new JsonResult(proizvod);
-
-        }
-        [HttpPut]
-        [Route("{sifra:int}")]
-
-        public IActionResult Post(int sifra,Proizvod proizvod
-            ) 
+        protected override List<ProizvodDTORead> UcitajSve()
         {
-            var proizvodIzBaze=_context.Proizvodi.Find(sifra);
-            proizvodIzBaze.Naziv = proizvod.Naziv;
-            proizvodIzBaze.Proizvodjac=proizvod.Proizvodjac;
-             
-
-            _context.Proizvodi.Update(proizvodIzBaze);
-            _context.SaveChanges();
-
-            return new JsonResult(proizvodIzBaze);
+            var lista = _context.Proizvodi
+                    .Include(g => g.Proizvodjac)
+                    
+                    .ToList();
+            if (lista == null || lista.Count == 0)
+            {
+                throw new Exception("Ne postoje podaci u bazi");
+            }
+            return _mapper.MapReadList(lista);
         }
 
-        [HttpDelete]
-        [Route("{sifra:int}")]
-        [Produces("application/json")]
-        public IActionResult Delete(int sifra)
+        protected override Proizvod NadiEntitet(int sifra)
         {
-            var proizvodIzBaze = _context.Proizvodi.Find(sifra);
-            _context.Proizvodi.Remove(proizvodIzBaze);
-            _context.SaveChanges();
-
-            return new JsonResult(new {poruka="Obrisano"});
+            return _context.Proizvodi.Include(i => i.Proizvodjac)
+         .FirstOrDefault(x => x.Sifra == sifra) ?? throw new Exception("Ne postoji Proizvod s šifrom " + sifra + " u bazi");
         }
 
 
 
+        protected override Proizvod PromjeniEntitet(ProizvodDTOInsertUpdate dto, Proizvod entitet)
+        {
+            var proizvodjac = _context.Proizvodjaci.Find(dto.ProizvodjacSifra) ?? throw new Exception("Ne postoji proizvodjac s šifrom " + dto.ProizvodjacSifra + " u bazi");
+            
+
+
+         
+            entitet.Naziv = dto.Naziv;
+            entitet.Proizvodjac = proizvodjac;
+            
+
+            return entitet;
+        }
     }
 }

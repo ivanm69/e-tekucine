@@ -1,76 +1,37 @@
 ﻿using Backend.Data;
 using Backend.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class ProizvodjacController : ControllerBase
+    public class ProizvodjacController : TekucineController<Proizvodjac, ProizvodjacDTORead, ProizvodjacDTOInsertUpdate>
     {
-
-        private readonly TekucineContext _context;
-
-
-        public ProizvodjacController(TekucineContext context)
+        public ProizvodjacController(TekucineContext context) : base(context)
         {
-            _context = context;
+            DbSet = _context.Proizvodjaci;
         }
-
-
-        [HttpGet]
-        public IActionResult Get()
+        protected override void KontrolaBrisanje(Proizvodjac entitet)
         {
-            return new JsonResult(_context.Proizvodjaci.ToList());
-
+            var lista = _context.Proizvodi
+                .Include(x => x.Proizvodjac)
+                .Where(x => x.Proizvodjac.Naziv == entitet.Naziv)
+                .ToList();
+            if (lista != null && lista.Count > 0)
+            {
+                StringBuilder sb = new();
+                sb.Append("Proizvodjac se ne može obrisati jer je postavljen na proizvodima: ");
+                foreach (var e in lista)
+                {
+                    sb.Append(e.Naziv).Append(", ");
+                }
+                throw new Exception(sb.ToString()[..^2]); 
+           }
         }
-        [HttpGet]
-        [Route("{sifra:int}")]
-        public IActionResult GetBySifra(int sifra)
-        {
-            return new JsonResult(_context.Proizvodjaci.Find(sifra));
-        }
-
-        [HttpPost]
-
-        public IActionResult Post(Proizvodjac proizvodjac)
-        {
-            _context.Proizvodjaci.Add(proizvodjac);
-            _context.SaveChanges();
-            return new JsonResult(proizvodjac);
-
-        }
-        [HttpPut]
-        [Route("{sifra:int}")]
-
-        public IActionResult Post(int sifra, Proizvodjac proizvodjac
-            )
-        {
-            var proizvodjacIzBaze = _context.Proizvodjaci.Find(sifra);
-            proizvodjacIzBaze.Naziv = proizvodjac.Naziv;
-            proizvodjacIzBaze.link = proizvodjac.link;
-            
-
-
-            _context.Proizvodjaci.Update(proizvodjacIzBaze);
-            _context.SaveChanges();
-
-            return new JsonResult(proizvodjacIzBaze);
-        }
-
-        [HttpDelete]
-        [Route("{sifra:int}")]
-        [Produces("application/json")]
-        public IActionResult Delete(int sifra)
-        {
-            var proizvodjacIzBaze = _context.Proizvodjaci.Find(sifra);
-            _context.Proizvodjaci.Remove(proizvodjacIzBaze);
-            _context.SaveChanges();
-
-            return new JsonResult(new { poruka = "Obrisano" });
-        }
-
-
 
     }
 }
+

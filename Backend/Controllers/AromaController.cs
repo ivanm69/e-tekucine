@@ -1,69 +1,40 @@
 ﻿using Backend.Data;
 using Backend.Models;
+using Backend.Mappers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class AromaController:ControllerBase
+    public class AromaController: TekucineController<Aroma,AromaDTORead,AromaDTOInsertUpdate>
     {
         
-        private readonly TekucineContext _context;
-
-
-    public AromaController(TekucineContext context)
+    public AromaController(TekucineContext context):base(context)
         {
-            _context = context;
+            DbSet = _context.Arome;
+           
         }
 
-
-        [HttpGet]
-        public IActionResult Get()
+        protected override void KontrolaBrisanje(Aroma entitet)
         {
-
-            return new JsonResult(_context.Arome.ToList());
+            var lista = _context.Proizvodi
+               // .Include(x => x.Aroma)
+               // .Where(x => x.Aroma != null && x.Aroma.Sifra == entitet.Sifra)
+                .ToList();
+            if (lista != null && lista.Count > 0)
+            {
+                StringBuilder sb = new();
+                sb.Append("Aroma se ne može obrisati jer je postavljen na proizvodima: ");
+                foreach (var e in lista)
+                {
+                    sb.Append(e.Naziv).Append(", ");
+                }
+                throw new Exception(sb.ToString()[..^2]);
+            }
         }
-
-        [HttpPost]
-
-        public IActionResult Post(Aroma aroma)
-        {
-            _context.Arome.Add(aroma);
-            _context.SaveChanges();
-            return new JsonResult(aroma);
-
-        }
-        [HttpPut]
-        [Route("{sifra:int}")]
-
-        public IActionResult Post(int sifra, Aroma aroma
-            )
-        {
-            var aromaIzBaze = _context.Arome.Find(sifra);
-            aromaIzBaze.Naziv = aroma.Naziv;
-            aromaIzBaze.Proizvod = aroma.Proizvod;
-
-
-            _context.Arome.Update(aromaIzBaze);
-            _context.SaveChanges();
-
-            return new JsonResult(aromaIzBaze);
-        }
-
-        [HttpDelete]
-        [Route("{sifra:int}")]
-        [Produces("application/json")]
-        public IActionResult Delete(int sifra)
-        {
-            var proizvodIzBaze = _context.Arome.Find(sifra);
-            _context.Arome.Remove(proizvodIzBaze);
-            _context.SaveChanges();
-
-            return new JsonResult(new { poruka = "Obrisano" });
-        }
-
-
-
     }
 }

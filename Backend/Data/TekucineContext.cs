@@ -1,7 +1,7 @@
 ﻿
-
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace Backend.Data
 {
@@ -13,10 +13,22 @@ namespace Backend.Data
 
         }
 
-        public DbSet<Proizvod> Proizvodi { get; set; }
         public DbSet<Proizvodjac> Proizvodjaci { get; set; }
 
-        public DbSet<Aroma>Arome { get; set; }
+        public DbSet<Aroma> Arome { get; set; }
 
+        public DbSet<Proizvod> Proizvodi { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+           
+            modelBuilder.Entity<Proizvod>().HasOne(g => g.Proizvodjac);
+            
+
+            
+
+
+        }
     }
 }

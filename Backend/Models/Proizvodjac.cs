@@ -2,7 +2,10 @@
 {
     public class Proizvodjac:Entitet
     {
-        public string? Naziv { get; set; }
-        public string? link { get; set; }
+        
+        
+            public string? Naziv { get; set; }
+            public string? Link { get; set; }
+
+        }
     }
-}

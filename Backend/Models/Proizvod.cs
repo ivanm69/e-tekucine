@@ -2,11 +2,14 @@
 
 namespace Backend.Models
 {
-    public class Proizvod: Entitet
+    public class Proizvod : Entitet
     {
         public string? Naziv { get; set; }
-        public int? Proizvodjac { get; set; }
-        
+
+        [ForeignKey("proizvodjac")]
+        public required Proizvodjac Proizvodjac { get; set; }
+
+       
 
     }
 }
