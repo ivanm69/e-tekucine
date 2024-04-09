@@ -15,12 +15,12 @@ namespace Backend.Models
 
 
 
-    public record AromaDTORead(int Sifra, string? Naziv, int Proizvod, string? Vrsta, bool? Hladilo);
+    public record AromaDTORead(int Sifra, string? Naziv, int? ProizvodNaziv, string? Vrsta, bool? Hladilo);
 
     public record AromaDTOInsertUpdate([Required(ErrorMessage = "Naziv obavezno")]
         string? Naziv,
         [Required(ErrorMessage = "Proizvod obavezno")]
-        int? Proizvod,
+         int ?ProizvodSifra,
         [Required(ErrorMessage = "Vrsta obavezno")]
 
         string? Vrsta,

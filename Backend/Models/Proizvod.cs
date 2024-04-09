@@ -9,7 +9,7 @@ namespace Backend.Models
         [ForeignKey("proizvodjac")]
         public required Proizvodjac Proizvodjac { get; set; }
 
-       
 
+        public required Aroma Aroma { get; set; }
     }
 }

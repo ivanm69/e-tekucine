@@ -5,7 +5,10 @@ namespace Backend.Models
     public class Aroma : Entitet
     {
         public string? Naziv { get; set; }
-        public int?Proizvod { get; set; }
+
+        [ForeignKey("proizvod")]
+        public required Proizvod Proizvod { get; set; }
+        
 
         public string? Vrsta { get; set; }
 

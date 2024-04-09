@@ -18,7 +18,7 @@ namespace Backend.Controllers
         {
             var lista = _context.Proizvodi
                 .Include(x => x.Proizvodjac)
-                .Where(x => x.Proizvodjac.Naziv == entitet.Naziv)
+                .Where(x => x.Proizvodjac.Sifra == entitet.Sifra)
                 .ToList();
             if (lista != null && lista.Count > 0)
             {

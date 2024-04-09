@@ -24,7 +24,7 @@ namespace Backend.Data
 
            
             modelBuilder.Entity<Proizvod>().HasOne(g => g.Proizvodjac);
-            
+            modelBuilder.Entity<Aroma>().HasOne(g => g.Proizvod);
 
             
 

@@ -19,16 +19,20 @@ namespace Backend.Controllers
         }
         protected override void KontrolaBrisanje(Proizvod entitet)
         {
-            if (entitet != null && entitet.Proizvodjac != null)
+            if (entitet != null && entitet.Aroma != null)
             {
                 StringBuilder sb = new StringBuilder();
-                sb.Append("Proizvod se ne može obrisati jer su na njemu proizvodjaci: ");
-                foreach (var e in entitet.Naziv)
+                sb.Append("Proizvod se ne može obrisati jer su na njemu aroma: ");
+                foreach (var aroma in entitet.Naziv)
                 {
-
+                    sb.Append(entitet.Naziv);
+                    sb.Append(", ");
                 }
 
-                throw new Exception(sb.ToString()[..^2]);
+                // Remove the last comma and space
+                sb.Remove(sb.Length - 2, 2);
+
+                throw new Exception(sb.ToString()); ;
             }
         }
 

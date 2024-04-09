@@ -28,6 +28,7 @@ namespace Backend.Mappers
                 .ConstructUsing(entitet =>
                  new ProizvodDTOInsertUpdate(
                     entitet.Naziv,
+       
                     entitet.Proizvodjac == null ? null : entitet.Proizvodjac.Sifra));
             }));
         }
