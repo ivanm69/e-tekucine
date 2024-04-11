@@ -19,20 +19,19 @@ namespace Backend.Controllers
         }
         protected override void KontrolaBrisanje(Proizvod entitet)
         {
-            if (entitet != null && entitet.Aroma != null)
+            var lista = _context.Arome
+                .Include(x => x.Proizvod)
+                .Where(x => x.Proizvod.Sifra ==entitet.Sifra)
+                .ToList();
+            if(lista == null && lista.Count > 0)
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("Proizvod se ne može obrisati jer su na njemu aroma: ");
-                foreach (var aroma in entitet.Naziv)
+                StringBuilder sb = new();
+                sb.Append("Proizvod se ne moze obrisati jer je postavljen na Aromi : ");
+                foreach (var e in lista)
                 {
-                    sb.Append(entitet.Naziv);
-                    sb.Append(", ");
+                    sb.Append(e.Naziv).Append(", ");
                 }
-
-                // Remove the last comma and space
-                sb.Remove(sb.Length - 2, 2);
-
-                throw new Exception(sb.ToString()); ;
+                throw new Exception(sb.ToString()[..^2]);
             }
         }
 

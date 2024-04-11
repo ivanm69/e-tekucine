@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Data.Entity.Core.Metadata.Edm;
 
 namespace Backend.Controllers
 {
@@ -23,9 +24,9 @@ namespace Backend.Controllers
 
         protected override void KontrolaBrisanje(Aroma entitet)
         {
-            var lista = _context.Arome
-                .Include(x => x.Proizvod)
-                .Where(x => x.Proizvod != null && x.Proizvod.Sifra == entitet.Sifra)
+            var lista = _context.Proizvodi
+                .Include(x => x.Aroma)
+                .Where(x => x.Aroma != null && x.Aroma.Sifra == entitet.Sifra)
                 .ToList();
             if (lista != null && lista.Count > 0)
             {
@@ -53,7 +54,8 @@ namespace Backend.Controllers
         {
             var lista = _context.Arome
                     .Include(x => x.Proizvod)
-
+            
+      
                     .ToList();
             if (lista == null || lista.Count == 0)
             {

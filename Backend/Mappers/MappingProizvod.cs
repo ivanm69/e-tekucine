@@ -16,6 +16,7 @@ namespace Backend.Mappers
                     entitet.Naziv,
                     entitet.Proizvodjac == null ? "" : entitet.Proizvodjac.Naziv
                     
+                    
 ));
             }));
 

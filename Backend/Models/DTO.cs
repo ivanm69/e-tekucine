@@ -15,7 +15,7 @@ namespace Backend.Models
 
 
 
-    public record AromaDTORead(int Sifra, string? Naziv, int? ProizvodNaziv, string? Vrsta, bool? Hladilo);
+    public record AromaDTORead(int Sifra, string? Naziv, string? ProizvodNaziv, string? Vrsta, bool? Hladilo);
 
     public record AromaDTOInsertUpdate([Required(ErrorMessage = "Naziv obavezno")]
         string? Naziv,
@@ -36,4 +36,5 @@ namespace Backend.Models
         string? Naziv,
         [Required(ErrorMessage = "Proizvodjac obavezno")]
         int? ProizvodjacSifra);
+        
 }

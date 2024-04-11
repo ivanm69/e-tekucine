@@ -17,7 +17,8 @@ namespace Backend.Mappers
                      new AromaDTORead(
                         entitet.Sifra,
                         entitet.Naziv,
-                        entitet.Proizvod == null ? null : entitet.Proizvod.Sifra,
+                        entitet.Proizvod == null ? null : entitet.Proizvod.Naziv,
+                       
                         entitet.Vrsta,
                         entitet.Hladilo
 
@@ -34,8 +35,7 @@ namespace Backend.Mappers
                     .ConstructUsing(entitet =>
                      new AromaDTOInsertUpdate(
                         entitet.Naziv,
-                        entitet.Proizvod == null ? null : entitet.Proizvod.Sifra,
-                       
+                        entitet.Proizvod == null ? null : entitet.Proizvod.Sifra, 
                         entitet.Vrsta,
                         entitet.Hladilo));
                 }));
