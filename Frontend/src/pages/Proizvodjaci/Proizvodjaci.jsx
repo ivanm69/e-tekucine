@@ -1,85 +1,88 @@
-import { useEffect, useState } from 'react';
-import Container from 'react-bootstrap/Container';
-import { Table,Button } from 'react-bootstrap';
-import {  Link, useNavigate } from 'react-router-dom';
-import { RoutesNames } from '../../constants';
-import ProizvodjacService from '../../services/ProizvodjacService';
-
+import { useEffect, useState } from "react";
+import {  Button, Container, Table } from "react-bootstrap";
+import Service from "../../services/ProizvodjacService";
+import { IoIosAdd } from "react-icons/io";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import { RoutesNames } from "../../constants";
 
 
 export default function Proizvodjaci(){
     const [proizvodjaci,setProizvodjaci] = useState();
-    const navigate=useNavigate();
+    const navigate = useNavigate();
 
     async function dohvatiProizvodjace(){
-    await ProizvodjacService.get()
-     .then((odg)=>{
-        setProizvodjaci(odg);
-     })
-     .catch((e)=>{
-        console.log(e);
-     })
-     
-     ;
+        const odgovor = await Service.get('Proizvodjac');
+        if(!odgovor.ok){
+            alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+            return;
+        }
+        setProizvodjaci(odgovor.podaci);
     }
 
+    async function obrisiProizvodjac(sifra){
+        const odgovor = await Service.obrisi('Proizvodjac',sifra);
+        alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+        if (odgovor.ok){
+            dohvatiProizvodjace();
+        }
+    }
+     // Ovo se poziva dvaput u dev ali jednom u produkciji
+    // https://stackoverflow.com/questions/60618844/react-hooks-useeffect-is-called-twice-even-if-an-empty-array-is-used-as-an-ar
     useEffect(()=>{
         dohvatiProizvodjace();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
+    
+    
+    return (
 
-async function obrisiAsync(sifra){
-   const odgovor = await ProizvodjacService._delete(sifra);
-      if(odgovor.greska){
-          console.log(poruka.odgovor);
-          alert('Pogledaj konzolu');
-          return;
-      }
-      dohvatiProizvodjace();
-}
-
-    function obrisi(sifra){
-      obrisiAsync(sifra);
-    }
-
-
-    return(
-        <>
-           <Container>
-            <Link to={RoutesNames.PROIZVODJAC_NOVI}> Dodaj </Link>
-           
-            
-            
-            
-            
+        <Container>
+            <Link to={RoutesNames.PROIZVODJAC_NOVI} className="btn btn-success siroko">
+                <IoIosAdd
+                size={25}
+                /> Dodaj
+            </Link>
             <Table striped bordered hover responsive>
-             <thead>
-              <tr>
-                <th>Naziv</th>
-                <th>Link</th>
-                <th>Akcija</th>
-             </tr>
-             </thead>
-             <tbody>
-                {proizvodjaci && proizvodjaci.map((proizvodjac,index)=> (
-                <tr key={index}>
-                <td>{proizvodjac.naziv} </td>
-                <td>{proizvodjac.link} </td>
-                
+                <thead>
+                    <tr>
+                        <th>Naziv</th>
+                        <th>Link</th>
+                        
+                        <th>Akcija</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {Array.isArray(proizvodjaci) && proizvodjaci.map((proizvodjac,index)=>(
+                        <tr key={index}>
+                            <td>{proizvodjac.naziv}</td>
+                            <td className="desno">{proizvodjac.Link}</td>
+                            
+                                <Button 
+                                variant="primary"
+                                onClick={()=>{navigate(`/proizvodjaci/${proizvodjac.sifra}`)}}>
+                                    <FaEdit 
+                                    size={25}
+                                    />
+                                </Button>
+                                
+                                    &nbsp;&nbsp;&nbsp;
+                                <Button
+                                    variant="danger"
+                                    onClick={()=>obrisiProizvodjac(proizvodjac.sifra)}
+                                >
+                                    <FaTrash  
+                                    size={25}
+                                    />
+                                </Button>
 
-                <td>
-                  <Button onClick={()=>obrisi(proizvodjac.sifra)}
-                  variant='danger'>Obrisi</Button>
+                            
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+        </Container>
 
-                  <Button onClick={()=>{navigate(`/proizvodjaci/${proizvodjac.sifra}`)}}>Promjeni</Button>
-                </td>
-
-                </tr>
-
-
-                ))}
-            </tbody>
-           </Table>
-           </Container>
-        </>
     );
+
 }

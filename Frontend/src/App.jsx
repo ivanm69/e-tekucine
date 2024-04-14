@@ -11,7 +11,8 @@ import ProizvodiPromjena from './pages/Proizvodi/ProizvodiPromjena'
 import Proizvodjaci from './pages/Proizvodjaci/Proizvodjaci'
 import ProizvodjaciDodaj from './pages/Proizvodjaci/ProizvodjaciDodaj'
 import ProizvodjaciPromjena from './pages/Proizvodjaci/ProizvodjaciPromjena'
-
+import Arome from './pages/Arome/Arome'
+import AromeDodaj from './pages/Arome/AromeDodaj'
 
 
 
@@ -31,6 +32,8 @@ function App() {
   <Route path={RoutesNames.PROZIVODJAC_PREGLED} element={<Proizvodjaci/>}/>
   <Route path={RoutesNames.PROIZVODJAC_NOVI} element={<ProizvodjaciDodaj/>}/>
   <Route path={RoutesNames.PROIZVODJAC_PROMJENI}element={<ProizvodjaciPromjena/>}/>
+  <Route path={RoutesNames.AROMA_PREGLED}element={<Arome/>}/>
+  <Route path={RoutesNames.AROMA_NOVI}element={<AromeDodaj/>}/>
       </Routes>           
       
       

@@ -1,75 +1,113 @@
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { Link, Route, useNavigate } from "react-router-dom";
-import { RoutesNames } from "../../constants";
-import ProizvodService from "../../services/ProizvodService";
+import { Container, Form} from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import Service from '../../services/ProizvodService';
+import { RoutesNames } from '../../constants';
+import InputText from '../../components/InputText';
+import Akcije from '../../components/Akcije';
 
 
 
-export default function ProizvodiDodaj(){
 
-    const navigate=useNavigate();
+export default function ProzivodeDodaj() {
+  const navigate = useNavigate();
 
-    async function dodaj(proizvod){
-        const odgovor = await ProizvodService.post(proizvod);
-        if(odgovor.greska){
-            console.log(poruka.odgovor);
-            alert('Pogledaj konzolu');
-            return;
-        }
+  const [proizvodjaci, setProizvodjaci] = useState([]);
+  const [proizvodjacSifra, setProizvodjacSifra] = useState(0);
 
-        navigate(RoutesNames.PROZIVOD_PREGLED);
+  const [arome, setAroma] = useState([]);
+  const [aromaSifra, setAromaSifra] = useState(0);
+
+  async function dohvatiProizvodjac(){
+    
+    const odgovor = await Service.get('Proizvodjac');
+    if(!odgovor.ok){
+      alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+      return;
     }
+    setProizvodjaci(odgovor.podaci);
+    setProizvodjacSifra(odgovor.podaci[0].sifra);
+  }
 
-    function obradiSubmit(e){
+  async function dohvatiAroma(){
+    const odgovor = await Service.get('Aroma');
+    if(!odgovor.ok){
+      alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+        return;
+    }
+    setAroma(odgovor.podaci);
+    setAromaSifra(odgovor.podaci[0].sifra);
+  }
+
+  async function ucitaj(){
+    await dohvatiProizvodjac();
+    await dohvatiAroma();
+  }
+
+  useEffect(()=>{
+    ucitaj();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
+
+  async function dodaj(e) {
+    const odgovor = await Service.dodaj('Proizvod',e);
+    if(odgovor.ok){
+      navigate(RoutesNames.PROZIVOD_PREGLED);
+      return
+    }
+    alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+  }
+
+  function handleSubmit(e) {
     e.preventDefault();
-    //alert('dodajem smjer');
 
     const podaci = new FormData(e.target);
 
-    const proizvod = {
+    dodaj({
+      naziv: podaci.get('naziv'),
+      proizvodjacSifra: parseInt(proizvodjacSifra),
+      aromaSifra: parseInt(aromaSifra),
+      
+    });
+  }
 
-        naziv:podaci.get('naziv'),
-        proizvodjac:podaci.get('proizvodjac')
-    };
+  return (
+    <Container className='mt-4'>
+      <Form onSubmit={handleSubmit}>
 
-    dodaj(proizvod);
-}
+        <InputText atribut='naziv' vrijednost='' />
 
-    return(
-
-        <Container>
-
-        <Form onSubmit={obradiSubmit}>
-        <Form.Group controlId="naziv">
-        <Form.Label>Naziv</Form.Label>
-        <Form.Control type="text" name="naziv" />
-        </Form.Group>
-
-       
-        <Form.Group controlId="proizvodjac">
-        <Form.Label>Proizvodjac</Form.Label>
-        <Form.Control type="text" name="proizvodjac" />
-        </Form.Group>
-       <hr />
-        <Row >
-        <Col xs={6} sm={6} md={3} lg={6} xl={1} xxl={2}> 
-        <Link className="btn btn-danger" to={RoutesNames.PROZIVOD_PREGLED}>
-            Odustani 
-        </Link>
         
-        </Col>
-        <Col xs={6} sm={6} md={9} lg={6} xl={1} xxl={10}>
 
-        <Button className="siroko" variant="primary" type="submit">
-            Dodaj
-        </Button>
-        </Col>
+        <Form.Group className='mb-3' controlId='proizvodjac'>
+          <Form.Label>Proizvodjac</Form.Label>
+          <Form.Select multiple={true}
+          onChange={(e)=>{setProizvodjacSifra(e.target.value)}}
+          >
+          {Array.isArray(proizvodjaci) && proizvodjaci.map((s,index)=>(
+            <option key={index} value={s.sifra}>
+              {s.naziv}
+            </option>
+          ))}
+          </Form.Select>
+        </Form.Group>
 
-        </Row>
+        <Form.Group className='mb-3' controlId='aroma'>
+          <Form.Label>Aroma</Form.Label>
+          <Form.Select
+          onChange={(e)=>{setAromaSifra(e.target.value)}}
+          >
+          {Array.isArray(arome) && arome.map((e,index)=>(
+            <option key={index} value={e.sifra}>
+              {e.naziv} {e.proizvod}{e.vrsta}{e.hladilo}
+            </option>
+          ))}
+          </Form.Select>
+        </Form.Group>
 
-
-
-</Form>
-        </Container>
-    );
+        
+        <Akcije odustani={RoutesNames.PROZIVOD_PREGLED} akcija='Dodaj proizvod' /> 
+      </Form>
+    </Container>
+  );
 }

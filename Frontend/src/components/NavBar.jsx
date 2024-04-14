@@ -33,7 +33,8 @@ export default function NavBar(){
                     <NavDropdown.Item onClick={()=>navigate(RoutesNames.PROZIVODJAC_PREGLED)}>
                        Proizvodjaci
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.3">Arome</NavDropdown.Item>
+                    <NavDropdown.Item onClick={()=>navigate(RoutesNames.AROMA_PREGLED)}>
+                       Arome</NavDropdown.Item>
                 
                     
                      

@@ -7,5 +7,14 @@ export const RoutesNames = {
     
     PROZIVODJAC_PREGLED: '/proizvodjaci',
     PROIZVODJAC_NOVI: '/proizvodjaci/dodaj',
-    PROIZVODJAC_PROMJENI: '/proizvodjaci/:sifra'
+    PROIZVODJAC_PROMJENI: '/proizvodjaci/:sifra',
+
+    AROMA_PREGLED:'/arome',
+    AROMA_NOVI:'/arome/dodaj',
+    AROMA_PROMJENI:'/arome/:sifra'
+};
+
+export const App={
+  URL:'https://plax69-001-site1.itempurl.com',
+  DEV:true
 };

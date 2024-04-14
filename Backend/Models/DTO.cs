@@ -10,7 +10,7 @@ namespace Backend.Models
         string? Naziv,
 
 
-        [Required(ErrorMessage = "link obavezno")]
+       [Required(ErrorMessage = "link obavezno")]
         string? Link);
 
 

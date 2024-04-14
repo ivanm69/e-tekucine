@@ -1,75 +1,43 @@
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { Link, Route, useNavigate } from "react-router-dom";
+import { Container, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { RoutesNames } from "../../constants";
-import ProizvodjacService from "../../services/ProizvodjacService";
-
+import Service from "../../services/ProizvodjacService";
+import InputText from "../../components/InputText";
+import Akcije from "../../components/Akcije";
 
 
 export default function ProizvodjaciDodaj(){
+    const navigate = useNavigate();
 
-    const navigate=useNavigate();
-
-    async function dodaj(proizvodjac){
-        const odgovor = await ProizvodjacService.post(proizvodjac);
-        if(odgovor.greska){
-            console.log(poruka.odgovor);
-            alert('Pogledaj konzolu');
-            return;
+    async function dodajProizvodjac(proizvodjac){
+        const odgovor = await Service.dodaj('Proizvodjac',proizvodjac);
+        if(odgovor.ok){
+          navigate(RoutesNames.PROZIVODJAC_PREGLED);
+          return
         }
-
-        navigate(RoutesNames.PROZIVODJAC_PREGLED);
+        alert(Service.dohvatiPorukeAlert(odgovor.podaci));
     }
 
-    function obradiSubmit(e){
-    e.preventDefault();
-    //alert('dodajem smjer');
+    function handleSubmit(e){
+        e.preventDefault();
+        const podaci = new FormData(e.target);
+        dodajProizvodjac({
+            naziv: podaci.get('naziv'),
+            link: podaci.get('link')
+            
+        });
+    }
 
-    const podaci = new FormData(e.target);
-
-    const proizvodjac = {
-
-        naziv:podaci.get('naziv'),
-        link:podaci.get('link')
-    };
-
-    dodaj(proizvodjac);
-}
-
-    return(
+    return (
 
         <Container>
-
-        <Form onSubmit={obradiSubmit}>
-        <Form.Group controlId="naziv">
-        <Form.Label>Naziv</Form.Label>
-        <Form.Control type="text" name="naziv" />
-        </Form.Group>
-
-       
-        <Form.Group controlId="link">
-        <Form.Label>Link</Form.Label>
-        <Form.Control type="text" name="link" />
-        </Form.Group>
-       <hr />
-        <Row >
-        <Col xs={6} sm={6} md={3} lg={6} xl={1} xxl={2}> 
-        <Link className="btn btn-danger" to={RoutesNames.PROZIVODJAC_PREGLED}>
-            Odustani 
-        </Link>
-        
-        </Col>
-        <Col xs={6} sm={6} md={9} lg={6} xl={1} xxl={10}>
-
-        <Button className="siroko" variant="primary" type="submit">
-            Dodaj
-        </Button>
-        </Col>
-
-        </Row>
-
-
-
-</Form>
+           <Form onSubmit={handleSubmit}>
+                <InputText atribut='naziv' vrijednost='' />
+                <InputText atribut='link' vrijednost='' />
+                <Akcije odustani={RoutesNames.PROZIVODJAC_PREGLED} akcija='Dodaj Proizvodjac' />
+           </Form>
         </Container>
+
     );
+
 }

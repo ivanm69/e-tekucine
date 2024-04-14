@@ -1,95 +1,64 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import {  Container, Form } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
+import Service from "../../services/ProizvodjacService";
 import { RoutesNames } from "../../constants";
-import ProizvodjacService from "../../services/ProizvodjacService";
+import InputText from "../../components/InputText";
+import Akcije from "../../components/Akcije";
 
 
-export default function ProizvodjaciPromjena(){
+export default function ProizvodajciPromjeni(){
 
-    const navigate=useNavigate();
-    const routeParams= useParams();
-    const[proizvodjac,setProizvodjac]=useState({});
+    const navigate = useNavigate();
+    const routeParams = useParams();
+    const [proizvodjac,setProizvodjac] = useState({});
 
     async function dohvatiProizvodjac(){
-        const o = await ProizvodjacService.getBySifra(routeParams.sifra);
-        if(o.greska){
-            console.log(o.poruka);
-            alert('Pogledaj konzolu');
+        const odgovor = await Service.getBySifra('Proizvodjac',routeParams.sifra)
+        if(!odgovor.ok){
+            alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+            navigate(RoutesNames.PROZIVODJAC_PREGLED);
             return;
         }
+        setProizvodjac(odgovor.podaci);
+    }
 
-        setProizvodjac(o.poruka);
-    }
-    async function promjeni(proizvodjac){
-        const odgovor=await ProizvodjacService.put(routeParams.sifra,proizvodjac
-            );
-        if(odgovor.greska){
-            console.log(odgovor.poruka);
-            alert('Pogledaj konzolu');
-            return;
-        }
-        navigate(RoutesNames.PROZIVODJAC_PREGLED);
-    }
     useEffect(()=>{
         dohvatiProizvodjac();
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
 
-    function obradiSubmit(e){
-    e.preventDefault();
+    async function promjeniProizvodjac(proizvodjac){
+        const odgovor = await Service.promjeni('Proizvodjac',routeParams.sifra,proizvodjac);
+        if(odgovor.ok){
+          navigate(RoutesNames.PROZIVODJAC_PREGLED);
+          return;
+        }
+        alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+    }
+
     
-   
+    function handleSubmit(e){
+        e.preventDefault();
+        const podaci = new FormData(e.target);
+        promjeniProizvodjac({
+            naziv: podaci.get('naziv'),
+            link: podaci.get('link')
+            
+        });
+    }
 
-    const podaci = new FormData(e.target);
 
-    const proizvodjac = {
 
-        naziv:podaci.get('naziv'),
-        link:podaci.get('link')
-    };
-
-    promjeni(proizvodjac);
-}
-
-    return(
-
+    return (
         <Container>
-
-        <Form onSubmit={obradiSubmit}>
-        <Form.Group controlId="naziv">
-        <Form.Label>Naziv</Form.Label>
-        <Form.Control type="text" name="naziv" 
-        defaultValue={proizvodjac.naziv} />
-        </Form.Group>
-
-       
-        <Form.Group controlId="link">
-        <Form.Label>Link</Form.Label>
-        <Form.Control type="text" name="link" 
-        defaultValue={proizvodjac.link} />
-        </Form.Group>
-       <hr />
-        <Row >
-        <Col xs={6} sm={6} md={3} lg={6} xl={1} xxl={2}> 
-        <Link className="btn btn-danger" to={RoutesNames.PROZIVODJAC_PREGLED}>
-            Odustani 
-        </Link>
-        
-        </Col>
-        <Col xs={6} sm={6} md={9} lg={6} xl={1} xxl={10}>
-
-        <Button className="siroko" variant="primary" type="submit">
-            Promjeni
-        </Button>
-        </Col>
-
-        </Row>
-
-
-
-</Form>
-        </Container>
+           <Form onSubmit={handleSubmit}>
+                    <InputText atribut='naziv' vrijednost={proizvodjac.naziv} />
+                    <InputText atribut='link' vrijednost={proizvodjac.link} />
+                    
+                    <Akcije odustani={RoutesNames.PROZIVODJAC_PREGLED} akcija='Promjeni proizvodjac' />
+             </Form>
+             </Container>
     );
+
 }
