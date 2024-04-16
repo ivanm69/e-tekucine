@@ -5,25 +5,62 @@ import Service from '../../services/AromaService';
 import { RoutesNames } from '../../constants';
 import InputText from '../../components/InputText';
 import Akcije from '../../components/Akcije';
+import InputCheckbox from '../../components/InputCheckbox';
 
 export default function AromePromjeni() {
+  const navigate = useNavigate();
+  const routeParams = useParams();
   const [aroma, setAroma] = useState({});
 
-  const routeParams = useParams();
-  const navigate = useNavigate();
+  const [proizvodi, setProizvodi] = useState([]);
+  const [sifraProizvod, setSifraProizvod] = useState(0);
+
+  
 
 
-  async function dohvatiAroma() {
+  async function dohvatiArome() {
     const odgovor = await Service.getBySifra('Aroma',routeParams.sifra);
     if(!odgovor.ok){
       alert(Service.dohvatiPorukeAlert(odgovor.podaci));
       return;
     }
-    setAroma(odgovor.podaci);
+    let aroma = odgovor.podaci;
+    
+    
+    setAroma(aroma);
+    setSifraProizvod(aroma.proizvodSifra);
+    if(aroma.proizvodSifra!=null){
+      setSifraProizvod(aroma.ProizvodSifra);
+    }       
   }
 
-  async function promjeniAroma(aroma) {
-    const odgovor = await Service.promjeni('Aroma',routeParams.sifra, aroma);
+ 
+
+  async function dohvatiProizvod() {
+    const odgovor =  await Service.get('Proizvod');
+    if(!odgovor.ok){
+      alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+      return;
+    }
+    setProizvodi(odgovor.podaci);
+    setSifraProizvod(odgovor.podaci[0].sifra);
+      
+  }
+
+
+  async function dohvatiInicijalnePodatke() {
+    await dohvatiProizvod();
+    await dohvatiArome();
+    
+  }
+
+  useEffect(() => {
+    dohvatiInicijalnePodatke();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function promjeni(e) {
+    const odgovor = await Service.promjeni('Aroma',routeParams.sifra, e);
     if(odgovor.ok){
       navigate(RoutesNames.AROMA_PREGLED);
       return;
@@ -31,33 +68,48 @@ export default function AromePromjeni() {
     alert(Service.dohvatiPorukeAlert(odgovor.podaci));
   }
 
-  useEffect(() => {
-    dohvatiAroma();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
-  
+
   function handleSubmit(e) {
     e.preventDefault();
+
     const podaci = new FormData(e.target);
-    promjeniAroma({
+    
+
+    promjeni({
       naziv: podaci.get('naziv'),
-      proizvod: podaci.get('prozivod'),
-      vrsta: podaci.get('vrsta'),
-      hladilo: podaci.get('hladilo')=='on'? true:false,
-      
+      proizovdSifra: parseInt(sifraProizvod), 
+      vrsta:podaci.get('vrsta'),
+      hladilo:podaci.get('hladilo'),
+     
     });
+    
   }
 
   return (
-    <Container>
+    <Container className='mt-4'>
       <Form onSubmit={handleSubmit}>
         <InputText atribut='naziv' vrijednost={aroma.naziv} />
-        <InputText atribut='proizvod' vrijednost={aroma.proizvod} />
+       
+        <Form.Group className='mb-3' controlId='proizvodSifra'>
+          <Form.Label>Proizvod</Form.Label>
+          <Form.Select
+            value={sifraProizvod}
+            onChange={(e) => {
+              setSifraProizvod(e.target.value);
+            }}>
+            {Array.isArray(proizvodi) &&
+              proizvodi.map((aroma, index) => (
+                <option key={index} value={aroma.proizvodSifra}>
+                  {aroma.naziv}
+                </option>
+              ))}
+          </Form.Select>
+        </Form.Group>
         <InputText atribut='vrsta' vrijednost={aroma.vrsta} />
-        <InputText atribut='hladilo' vrijednost={aroma.hladilo} />
-        
-        <Akcije odustani={RoutesNames.AROMA_PREGLED} akcija='Promjeni aroma' />
+        <InputCheckbox atribut='hladilo' vrijednost={aroma.hladilo}/>
+       
+        <Akcije odustani={RoutesNames.AROMA_PREGLED} akcija='Promjeni aroma' /> 
       </Form>
     </Container>
   );

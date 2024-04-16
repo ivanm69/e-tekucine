@@ -58,7 +58,7 @@ export default function Proizvodi(){
                     {Array.isArray(proizvodi) && proizvodi.map((entitet,index)=>(
                         <tr key={index}>
                             <td>{entitet.naziv}</td>
-                            <td>{entitet.proizvodjacnaziv}</td>
+                            <td>{entitet.proizvodjacNaziv}</td>
                             
                             
                             <td className="sredina">

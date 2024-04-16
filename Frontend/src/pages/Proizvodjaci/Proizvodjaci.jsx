@@ -18,6 +18,7 @@ export default function Proizvodjaci(){
             return;
         }
         setProizvodjaci(odgovor.podaci);
+        
     }
 
     async function obrisiProizvodjac(sifra){
@@ -56,7 +57,7 @@ export default function Proizvodjaci(){
                     {Array.isArray(proizvodjaci) && proizvodjaci.map((proizvodjac,index)=>(
                         <tr key={index}>
                             <td>{proizvodjac.naziv}</td>
-                            <td className="desno">{proizvodjac.Link}</td>
+                            <td className="desno">{proizvodjac.link}</td>
                             
                                 <Button 
                                 variant="primary"

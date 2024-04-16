@@ -19,6 +19,7 @@ export default function Arome(){
             return;
         }
         setArome(odgovor.podaci);
+       
     }
 
     async function obrisiAroma(sifra) {
@@ -69,23 +70,25 @@ export default function Arome(){
                     {Array.isArray(arome) && arome.map((aroma,index)=>(
                         <tr key={index}>
                             <td>{aroma.naziv}</td>
-                            <td>{aroma.proizvod}</td>
+                            <td>{aroma.proizvodNaziv}</td>
+                            
                             <td>{aroma.vrsta}</td>
+                            
                             <td>{aroma.hladilo}</td>
                             
+                           
+
+                                       
                             <td className="sredina">
                                     <Button 
                                         variant='primary'
                                         onClick={()=>{navigate(`/arome/${aroma.sifra}`)}}
-                                    >
-
-                                        <td className="sredina">
-                            <GrValidate 
+                                    >  <GrValidate 
                             size={30} 
                             color={hladilo(aroma)}
                             title={hladiloTitle(aroma)}
                             />
-                            </td>
+                            
                                         <FaEdit 
                                     size={25}
                                     />
