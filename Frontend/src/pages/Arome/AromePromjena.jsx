@@ -7,13 +7,14 @@ import InputText from '../../components/InputText';
 import Akcije from '../../components/Akcije';
 import InputCheckbox from '../../components/InputCheckbox';
 
+
 export default function AromePromjeni() {
   const navigate = useNavigate();
   const routeParams = useParams();
   const [aroma, setAroma] = useState({});
 
   const [proizvodi, setProizvodi] = useState([]);
-  const [sifraProizvod, setSifraProizvod] = useState(0);
+  const [proizvodSifra, setProizvodSifra] = useState(0);
 
   
 
@@ -23,14 +24,15 @@ export default function AromePromjeni() {
     if(!odgovor.ok){
       alert(Service.dohvatiPorukeAlert(odgovor.podaci));
       return;
-    }
+    } 
+    
     let aroma = odgovor.podaci;
     
     
     setAroma(aroma);
-    setSifraProizvod(aroma.proizvodSifra);
+    setProizvodSifra(aroma.proizvodSifra);
     if(aroma.proizvodSifra!=null){
-      setSifraProizvod(aroma.ProizvodSifra);
+      setProizvodSifra(aroma.ProizvodSifra);
     }       
   }
 
@@ -43,7 +45,7 @@ export default function AromePromjeni() {
       return;
     }
     setProizvodi(odgovor.podaci);
-    setSifraProizvod(odgovor.podaci[0].sifra);
+    setProizvodSifra(odgovor.podaci[0].sifra);
       
   }
 
@@ -78,9 +80,9 @@ export default function AromePromjeni() {
 
     promjeni({
       naziv: podaci.get('naziv'),
-      proizovdSifra: parseInt(sifraProizvod), 
+      proizvodSifra: parseInt(proizvodSifra), 
       vrsta:podaci.get('vrsta'),
-      hladilo:podaci.get('hladilo'),
+      hladilo:podaci.get('hladilo')=='on'? true:false
      
     });
     
@@ -91,17 +93,17 @@ export default function AromePromjeni() {
       <Form onSubmit={handleSubmit}>
         <InputText atribut='naziv' vrijednost={aroma.naziv} />
        
-        <Form.Group className='mb-3' controlId='proizvodSifra'>
+        <Form.Group className='mb-3' controlId='proizvod'>
           <Form.Label>Proizvod</Form.Label>
           <Form.Select
-            value={sifraProizvod}
+           
             onChange={(e) => {
-              setSifraProizvod(e.target.value);
+              setProizvodSifra(e.target.value);
             }}>
-            {Array.isArray(proizvodi) &&
-              proizvodi.map((aroma, index) => (
-                <option key={index} value={aroma.proizvodSifra}>
-                  {aroma.naziv}
+            {proizvodi &&
+              proizvodi.map((s, index) => (
+                <option key={index} value={s.sifra}>
+                  {s.naziv}
                 </option>
               ))}
           </Form.Select>

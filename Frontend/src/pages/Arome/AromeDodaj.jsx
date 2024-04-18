@@ -66,7 +66,7 @@ export default function ProzivodeDodaj() {
       proizvodSifra: parseInt(proizvodSifra),
       aromaSifra: parseInt(aromaSifra),
       vrsta:podaci.get('vrsta'),
-      hladilo:podaci.get('hladilo')
+      hladilo:podaci.get('hladilo')=='on'? true:false
       
     });
   }
@@ -84,7 +84,7 @@ export default function ProzivodeDodaj() {
           <Form.Select multiple={true}
           onChange={(e)=>{setProizvodSifra(e.target.value)}}
           >
-          {Array.isArray(proizvodi) && proizvodi.map((s,index)=>(
+          {proizvodi && proizvodi.map((s,index)=>(
             <option key={index} value={s.sifra}>
               {s.naziv}
             </option>

@@ -43,8 +43,8 @@ export default function Arome(){
 
     function hladiloTitle(aroma){
         if (aroma.hladilo==null) return 'Nije definirano';
-        if(aroma.hladilo) return 'Verificiran';
-        return 'NIJE verificiran';
+        if(aroma.hladilo) return 'hladilo';
+        return 'nema hladilo';
     }
 
 
@@ -67,7 +67,7 @@ export default function Arome(){
                     </tr>
                 </thead>
                 <tbody>
-                    {Array.isArray(arome) && arome.map((aroma,index)=>(
+                    {arome && arome.map((aroma,index)=>(
                         <tr key={index}>
                             <td>{aroma.naziv}</td>
                             <td>{aroma.proizvodNaziv}</td>

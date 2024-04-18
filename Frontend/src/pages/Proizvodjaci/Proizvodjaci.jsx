@@ -54,7 +54,7 @@ export default function Proizvodjaci(){
                     </tr>
                 </thead>
                 <tbody>
-                    {Array.isArray(proizvodjaci) && proizvodjaci.map((proizvodjac,index)=>(
+                    {proizvodjaci && proizvodjaci.map((proizvodjac,index)=>(
                         <tr key={index}>
                             <td>{proizvodjac.naziv}</td>
                             <td className="desno">{proizvodjac.link}</td>

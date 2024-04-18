@@ -12,35 +12,36 @@ export default function ProizvodePromjeni() {
   const routeParams = useParams();
   const [proizvod, setProizvod] = useState({});
 
-  const [proizvodjaci, setProizvodjaci] = useState([]);
+  const [proizvodjac, setProizvodjaci] = useState([]);
   const [sifraProizvodjac, setSifraProizvodjac] = useState(0);
 
   const [arome, setArome] = useState([]);
   const [sifraAroma, setSifraAroma] = useState(0);
 
+  
 
-  async function dohvatiProizvode() {
+  async function dohvatiProizvod() {
     const odgovor = await Service.getBySifra('Proizvod',routeParams.sifra);
     if(!odgovor.ok){
-      alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+      prikaziError(odgovor.podaci);
       return;
     }
     let proizvod = odgovor.podaci;
-    
-    
+   
+   
     setProizvod(proizvod);
-    setSifraProizvodjac(proizvod.proizovdjacSifra);
+    setSifraProizvodjac(proizvod.proizvodjacSifra);
     if(proizvod.aromaSifra!=null){
-      setSifraAroma(proizvod.AromaSifra);
+      setSifraAroma(proizvod.aromaSifra);
     }       
   }
 
  
 
-  async function dohvatiProizvodjac() {
+  async function dohvatiProivodjac() {
     const odgovor =  await Service.get('Proizvodjac');
     if(!odgovor.ok){
-      alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+      prikaziError(odgovor.podaci);
       return;
     }
     setProizvodjaci(odgovor.podaci);
@@ -48,10 +49,10 @@ export default function ProizvodePromjeni() {
       
   }
 
-  async function dohvatiAroma() {
+  async function dohvatiArome() {
     const odgovor =  await Service.get('Aroma');
     if(!odgovor.ok){
-      alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+      prikaziError(odgovor.podaci);
       return;
     }
     setArome(odgovor.podaci);
@@ -61,10 +62,12 @@ export default function ProizvodePromjeni() {
  
 
   async function dohvatiInicijalnePodatke() {
-    await dohvatiProizvodjac();
-    await dohvatiAroma();
-    await dohvatiProizvode();
+    await dohvatiProivodjac();
+    await dohvatiArome();
+    await dohvatiProizvod();
+    
   }
+
 
   useEffect(() => {
     dohvatiInicijalnePodatke();
@@ -77,7 +80,7 @@ export default function ProizvodePromjeni() {
       navigate(RoutesNames.PROZIVOD_PREGLED);
       return;
     }
-    alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+    prikaziError(odgovor.podaci);
   }
 
 
@@ -86,61 +89,61 @@ export default function ProizvodePromjeni() {
     e.preventDefault();
 
     const podaci = new FormData(e.target);
-    
+   
 
     promjeni({
       naziv: podaci.get('naziv'),
-      proizovdjacSifra: parseInt(sifraProizvodjac), 
+      
+      proizvodjacSifra: parseInt(sifraProizvodjac), 
       aromaSifra: parseInt(sifraAroma),
-     
+      
     });
     
   }
 
   return (
     <Container className='mt-4'>
-      <Form onSubmit={handleSubmit}>
-        <InputText atribut='naziv' vrijednost={proizvod.naziv} />
-        <Row>
-          <Col key='1' sm={12} lg={6} md={6}>
-            <Form.Group className='mb-3' controlId='datum'>
+      
+        
+          <Form onSubmit={handleSubmit}>
+            <InputText atribut='naziv' vrijednost={proizvod.naziv} />
+            
               
+            <Form.Group className='mb-3' controlId='proizvodjac'>
+              <Form.Label>Proizvodjac</Form.Label>
+              <Form.Select
+                value={sifraProizvodjac}
+                onChange={(e) => {
+                  setSifraProizvodjac(e.target.value);
+                }}>
+                {proizvodjac &&
+                  proizvodjac.map((proizvodjac, index) => (
+                    <option key={index} value={proizvodjac.sifra}>
+                      {proizvodjac.naziv}{proizvodjac.link}
+                    </option>
+                  ))}
+              </Form.Select>
             </Form.Group>
-          </Col>
-        </Row>
-        <Form.Group className='mb-3' controlId='proizvodjac'>
-          <Form.Label>Proizvodjac</Form.Label>
-          <Form.Select
-            value={sifraProizvodjac}
-            onChange={(e) => {
-              setSifraProizvodjac(e.target.value);
-            }}>
-            {proizvodjaci &&
-              proizvodjaci.map((proizvodjac, index) => (
-                <option key={index} value={proizvodjac.sifra}>
-                  {proizvodjac.naziv}{proizvodjac.link}
-                </option>
-              ))}
-          </Form.Select>
-        </Form.Group>
-        <Form.Group className='mb-3' controlId='aroma'>
-          <Form.Label>Aroma</Form.Label>
-          <Form.Select
-            value={sifraAroma}
-            onChange={(e) => {
-              setSifraAroma(e.target.value);
-            }}>
-            {arome &&
-              arome.map((aroma, index) => (
-                <option key={index} value={aroma.sifra}>
-                  {aroma.proizvod} {aroma.vrsta}{aroma.hladilo}
-                </option>
-              ))}
-          </Form.Select>
-        </Form.Group>
-       
-        <Akcije odustani={RoutesNames.PROZIVOD_PREGLED} akcija='Promjeni proizvod' /> 
-      </Form>
+            <Form.Group className='mb-3' controlId='aroma'>
+              <Form.Label>Aroma</Form.Label>
+              <Form.Select
+                value={sifraAroma}
+                onChange={(e) => {
+                  setSifraAroma(e.target.value);
+                }}>
+                {arome &&
+                  arome.map((aroma, index) => (
+                    <option key={index} value={aroma.sifra}>
+                      {aroma.naziv}{aroma.proizvod}{aroma.vrsta} {aroma.hladilo}
+                    </option>
+                  ))}
+              </Form.Select>
+            </Form.Group>
+            
+            <Akcije odustani={RoutesNames.PROZIVOD_PREGLED} akcija='Promjeni proizvod' /> 
+          </Form>
+        
+      
     </Container>
   );
 }

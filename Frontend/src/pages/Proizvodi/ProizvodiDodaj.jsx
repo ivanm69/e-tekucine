@@ -84,7 +84,7 @@ export default function ProzivodeDodaj() {
           <Form.Select multiple={true}
           onChange={(e)=>{setProizvodjacSifra(e.target.value)}}
           >
-          {Array.isArray(proizvodjaci) && proizvodjaci.map((s,index)=>(
+          {proizvodjaci && proizvodjaci.map((s,index)=>(
             <option key={index} value={s.sifra}>
               {s.naziv}
             </option>
@@ -97,7 +97,7 @@ export default function ProzivodeDodaj() {
           <Form.Select
           onChange={(e)=>{setAromaSifra(e.target.value)}}
           >
-          {Array.isArray(arome) && arome.map((e,index)=>(
+          {arome && arome.map((e,index)=>(
             <option key={index} value={e.sifra}>
               {e.naziv} {e.proizvod}{e.vrsta}{e.hladilo}
             </option>

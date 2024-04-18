@@ -55,7 +55,7 @@ export default function Proizvodi(){
                     </tr>
                 </thead>
                 <tbody>
-                    {Array.isArray(proizvodi) && proizvodi.map((entitet,index)=>(
+                    {proizvodi && proizvodi.map((entitet,index)=>(
                         <tr key={index}>
                             <td>{entitet.naziv}</td>
                             <td>{entitet.proizvodjacNaziv}</td>
@@ -64,7 +64,7 @@ export default function Proizvodi(){
                             <td className="sredina">
                                     <Button
                                         variant='primary'
-                                        onClick={()=>{navigate(`/proizvode/${entitet.sifra}`)}}
+                                        onClick={()=>{navigate(`/proizvodi/${entitet.sifra}`)}}
                                     >
                                         <FaEdit 
                                     size={25}
