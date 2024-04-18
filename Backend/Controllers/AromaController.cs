@@ -47,6 +47,7 @@ namespace Backend.Controllers
             var entitet = _mapper.MapInsertUpdatedFromDTO(dto);
             entitet.Proizvod = proizvod;
 
+
             return entitet;
         }
 
@@ -81,7 +82,8 @@ namespace Backend.Controllers
 
             entitet.Naziv = dto.Naziv;
             entitet.Proizvod = proizvod;
-
+            entitet.Vrsta = dto.Vrsta;
+            entitet.Hladilo = dto.Hladilo;
 
             return entitet;
         }
