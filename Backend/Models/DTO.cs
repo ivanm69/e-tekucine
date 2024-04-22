@@ -3,7 +3,7 @@
 namespace Backend.Models
 {
 
-    public record ProizvodjacDTORead(int Sifra, string Naziv, string? Link);
+    public record ProizvodjacDTORead(int Sifra, string Naziv, string? Link, string? Slika);
 
     public record ProizvodjacDTOInsertUpdate(
         [Required(ErrorMessage = "Naziv obavezno")]
@@ -11,9 +11,9 @@ namespace Backend.Models
 
 
        [Required(ErrorMessage = "link obavezno")]
-        string? Link);
+        string? Link,
 
-
+    string? Slika);
 
     public record AromaDTORead(int Sifra, string? Naziv, string? ProizvodNaziv, string? Vrsta, bool? Hladilo);
 
@@ -36,5 +36,8 @@ namespace Backend.Models
         string? Naziv,
         [Required(ErrorMessage = "Proizvodjac obavezno")]
         int? ProizvodjacSifra);
-        
+
+    public record SlikaDTO([Required(ErrorMessage = "Base64 zapis slike obavezno")] string Base64);
+
 }
+
