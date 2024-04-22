@@ -5,8 +5,10 @@ export default function Pocetna(){
 
     return(
         <>
-           <Container>
+           <Container >
+            <p class="pozdrav">
             Dobrodošli na E-tekućine aplikaciju
+            </p>
            </Container>
         </>
     );

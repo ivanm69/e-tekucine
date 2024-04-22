@@ -7,15 +7,16 @@ import { Link } from "react-router-dom";
 import {  RoutesNames } from "../../constants";
 import { useNavigate } from "react-router-dom";
 import { GrValidate } from "react-icons/gr";
+import useError from "../../hooks/useError";
 
 export default function Arome(){
     const [arome,setArome] = useState();
     let navigate = useNavigate(); 
-
+   const{prikaziError}=useError();
     async function dohvatiArome(){
         const odgovor = await Service.get('Aroma');
         if(!odgovor.ok){
-            alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+            prikaziError(odgovor.podaci);
             return;
         }
         setArome(odgovor.podaci);
@@ -24,7 +25,7 @@ export default function Arome(){
 
     async function obrisiAroma(sifra) {
         const odgovor = await Service.obrisi('Aroma',sifra);
-        alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+        prikaziError(odgovor.podaci);
         if (odgovor.ok){
             dohvatiArome();
         }

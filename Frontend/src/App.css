@@ -7,3 +7,8 @@
 .labelaAtributa:first-letter, .form-check-label:first-letter {
   text-transform: uppercase;
 }
+.pozdrav{
+  color: wheat;
+  font-size: 20px;
+  text-align: center;
+}

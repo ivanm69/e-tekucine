@@ -4,10 +4,12 @@ import { RoutesNames } from "../../constants";
 import Service from "../../services/ProizvodjacService";
 import InputText from "../../components/InputText";
 import Akcije from "../../components/Akcije";
+import useError from "../../hooks/useError";
 
 
 export default function ProizvodjaciDodaj(){
     const navigate = useNavigate();
+    const { prikaziError } = useError();
 
     async function dodajProizvodjac(proizvodjac){
         const odgovor = await Service.dodaj('Proizvodjac',proizvodjac);
@@ -15,7 +17,7 @@ export default function ProizvodjaciDodaj(){
           navigate(RoutesNames.PROZIVODJAC_PREGLED);
           return
         }
-        alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+        prikaziError(odgovor.podaci);
     }
 
     function handleSubmit(e){

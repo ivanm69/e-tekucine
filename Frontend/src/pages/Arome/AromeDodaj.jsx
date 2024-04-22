@@ -6,6 +6,7 @@ import InputText from '../../components/InputText';
 import Akcije from '../../components/Akcije';
 import InputCheckbox from '../../components/InputCheckbox';
 import { useEffect, useState } from 'react';
+import useError from '../../hooks/useError';
 
 export default function ProzivodeDodaj() {
   const navigate = useNavigate();
@@ -15,12 +16,12 @@ export default function ProzivodeDodaj() {
 
   const [arome, setAroma] = useState([]);
   const [aromaSifra, setAromaSifra] = useState(0);
-
+  const { prikaziError } = useError();
   async function dohvatiProizvod(){
     
     const odgovor = await Service.get('Proizvod');
     if(!odgovor.ok){
-      alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+      prikaziError(odgovor.podaci);
       return;
     }
     setProizvodi(odgovor.podaci);
@@ -30,7 +31,7 @@ export default function ProzivodeDodaj() {
   async function dohvatiAroma(){
     const odgovor = await Service.get('Aroma');
     if(!odgovor.ok){
-      alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+      prikaziError(odgovor.podaci);
         return;
     }
     setAroma(odgovor.podaci);
@@ -53,7 +54,7 @@ export default function ProzivodeDodaj() {
       navigate(RoutesNames.AROMA_PREGLED);
       return
     }
-    alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+    prikaziError(odgovor.podaci);
   }
 
   function handleSubmit(e) {

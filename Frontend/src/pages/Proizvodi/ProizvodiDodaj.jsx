@@ -5,6 +5,7 @@ import Service from '../../services/ProizvodService';
 import { RoutesNames } from '../../constants';
 import InputText from '../../components/InputText';
 import Akcije from '../../components/Akcije';
+import useError from '../../hooks/useError';
 
 
 
@@ -17,12 +18,12 @@ export default function ProzivodeDodaj() {
 
   const [arome, setAroma] = useState([]);
   const [aromaSifra, setAromaSifra] = useState(0);
-
+  const { prikaziError } = useError();
   async function dohvatiProizvodjac(){
     
     const odgovor = await Service.get('Proizvodjac');
     if(!odgovor.ok){
-      alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+      prikaziError(odgovor.podaci);
       return;
     }
     setProizvodjaci(odgovor.podaci);
@@ -32,7 +33,7 @@ export default function ProzivodeDodaj() {
   async function dohvatiAroma(){
     const odgovor = await Service.get('Aroma');
     if(!odgovor.ok){
-      alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+      prikaziError(odgovor.podaci);
         return;
     }
     setAroma(odgovor.podaci);
@@ -55,7 +56,7 @@ export default function ProzivodeDodaj() {
       navigate(RoutesNames.PROZIVOD_PREGLED);
       return
     }
-    alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+    prikaziError(odgovor.podaci);
   }
 
   function handleSubmit(e) {

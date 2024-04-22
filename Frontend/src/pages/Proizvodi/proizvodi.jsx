@@ -4,19 +4,21 @@ import { IoIosAdd } from "react-icons/io";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
-
 import Service from "../../services/ProizvodService";
 import { RoutesNames } from "../../constants";
+import useError from "../../hooks/useError";
+
+
 
 export default function Proizvodi(){
     const [proizvodi,setProizvode] = useState();
     let navigate = useNavigate(); 
+    const { prikaziError } = useError();
 
     async function dohvatiProizvode(){
         const odgovor = await Service.get('Proizvod');
         if(!odgovor.ok){
-            alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+            prikaziError(odgovor.podaci);
             return;
         }
         setProizvode(odgovor.podaci);
@@ -24,7 +26,7 @@ export default function Proizvodi(){
 
     async function obrisiProizvod(sifra) {
         const odgovor = await Service.obrisi('Proizvod',sifra);
-        alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+        prikaziError(odgovor.podaci);
         if (odgovor.ok){
             dohvatiProizvode();
         }

@@ -6,6 +6,7 @@ import { RoutesNames } from '../../constants';
 import InputText from '../../components/InputText';
 import Akcije from '../../components/Akcije';
 import InputCheckbox from '../../components/InputCheckbox';
+import useError from '../../hooks/useError';
 
 
 export default function AromePromjeni() {
@@ -15,14 +16,14 @@ export default function AromePromjeni() {
 
   const [proizvodi, setProizvodi] = useState([]);
   const [proizvodSifra, setProizvodSifra] = useState(0);
-
+  const { prikaziError } = useError();
   
 
 
   async function dohvatiArome() {
     const odgovor = await Service.getBySifra('Aroma',routeParams.sifra);
     if(!odgovor.ok){
-      alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+      prikaziError(odgovor.podaci);
       return;
     } 
     
@@ -41,7 +42,7 @@ export default function AromePromjeni() {
   async function dohvatiProizvod() {
     const odgovor =  await Service.get('Proizvod');
     if(!odgovor.ok){
-      alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+      prikaziError(odgovor.podaci);
       return;
     }
     setProizvodi(odgovor.podaci);
@@ -67,7 +68,7 @@ export default function AromePromjeni() {
       navigate(RoutesNames.AROMA_PREGLED);
       return;
     }
-    alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+    prikaziError(odgovor.podaci);
   }
 
 

@@ -16,5 +16,5 @@ export const RoutesNames = {
 
 export const App={
   URL:'https://plax69-001-site1.itempurl.com',
-  DEV:true
+  DEV:false
 };

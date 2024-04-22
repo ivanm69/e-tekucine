@@ -5,6 +5,7 @@ import Service from '../../services/ProizvodService';
 import { RoutesNames } from '../../constants';
 import InputText from '../../components/InputText';
 import Akcije from '../../components/Akcije';
+import useError from '../../hooks/useError';
 
 
 export default function ProizvodePromjeni() {
@@ -17,7 +18,7 @@ export default function ProizvodePromjeni() {
 
   const [arome, setArome] = useState([]);
   const [sifraAroma, setSifraAroma] = useState(0);
-
+  const { prikaziError } = useError();
   
 
   async function dohvatiProizvod() {

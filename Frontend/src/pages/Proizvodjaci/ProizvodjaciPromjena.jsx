@@ -5,6 +5,7 @@ import Service from "../../services/ProizvodjacService";
 import { RoutesNames } from "../../constants";
 import InputText from "../../components/InputText";
 import Akcije from "../../components/Akcije";
+import useError from "../../hooks/useError";
 
 
 export default function ProizvodajciPromjeni(){
@@ -12,11 +13,12 @@ export default function ProizvodajciPromjeni(){
     const navigate = useNavigate();
     const routeParams = useParams();
     const [proizvodjac,setProizvodjac] = useState({});
+    const { prikaziError } = useError();
 
     async function dohvatiProizvodjac(){
         const odgovor = await Service.getBySifra('Proizvodjac',routeParams.sifra)
         if(!odgovor.ok){
-            alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+            prikaziError(odgovor.podaci);
             navigate(RoutesNames.PROZIVODJAC_PREGLED);
             return;
         }
@@ -34,7 +36,7 @@ export default function ProizvodajciPromjeni(){
           navigate(RoutesNames.PROZIVODJAC_PREGLED);
           return;
         }
-        alert(Service.dohvatiPorukeAlert(odgovor.podaci));
+        prikaziError(odgovor.podaci);
     }
 
     

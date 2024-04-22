@@ -14,6 +14,11 @@ import ProizvodjaciPromjena from './pages/Proizvodjaci/ProizvodjaciPromjena'
 import Arome from './pages/Arome/Arome'
 import AromeDodaj from './pages/Arome/AromeDodaj'
 import AromePromjena from './pages/Arome/AromePromjena'
+import ErrorModal from './components/ErrorModal'
+import useError from './hooks/useError'
+
+import ParticleBack from './components/Particle'
+
 
 
 
@@ -21,9 +26,12 @@ import AromePromjena from './pages/Arome/AromePromjena'
 
 function App() {
  
-
+  const { errors, prikaziErrorModal, sakrijError } = useError();
   return (
     <>
+   <ParticleBack/>
+     
+     <ErrorModal show={prikaziErrorModal} errors={errors} onHide={sakrijError} />
    <NavBar />
    <Routes>
   <Route path={RoutesNames.HOME} element={<Pocetna/>}/>
