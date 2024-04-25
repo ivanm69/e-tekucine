@@ -22,7 +22,7 @@ const ParticleBack = () => {
   "autoPlay": true,
   "background": {
     "color": {
-      "value": "#000000"
+      "value": "#2b2b2b"
     },
     "image": "",
     "position": "",
@@ -153,7 +153,7 @@ const ParticleBack = () => {
         "area": {
           "gradient": {
             "start": {
-              "value": "#ffffff"
+              "value": "#79d2e2"
             },
             "stop": {
               "value": "#000000"

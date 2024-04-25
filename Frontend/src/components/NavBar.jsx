@@ -13,18 +13,19 @@ export default function NavBar(){
 
     return(
         <>
-            <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
+            <Navbar collapseOnSelect expand="lg" className="bg-indigo-500">
             <Container>
                 <Navbar.Brand 
                 className='kursor'
-                onClick={()=>navigate(RoutesNames.HOME)}
-                >E-tekućineAPP</Navbar.Brand>
+                onClick={()=>navigate(RoutesNames.HOME)}>
+                <img src="\logo.svg" alt="Logo" className="d-inline-block align-middle  w-20 text-yellow-50" />
+                E-tekućineAPP</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="me-auto">
                     <Nav.Link 
                     href="https://plax69-001-site1.itempurl.com/swagger/index.html"
-                    target='_blank'>API</Nav.Link>
+                    target='_blank' className="text-yellow-50 font-medium no-underline hover:underline decoration-green-500">API</Nav.Link>
                     
                     <NavDropdown title="Izbornik" id="collapsible-nav-dropdown">
                     <NavDropdown.Item 

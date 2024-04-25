@@ -1,4 +1,5 @@
 ﻿using Backend.Data;
+using Backend.Mappers;
 using Backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ namespace Backend.Controllers
         public ProizvodjacController(TekucineContext context) : base(context)
         {
             DbSet = _context.Proizvodjaci;
+            _mapper = new MappingProizvodjac();
         }
         protected override void KontrolaBrisanje(Proizvodjac entitet)
         {
@@ -52,7 +54,7 @@ namespace Backend.Controllers
             {
                 var ds = Path.DirectorySeparatorChar;
                 string dir = Path.Combine(Directory.GetCurrentDirectory()
-                    + ds + "wwwroot" + ds + "slike" + ds + "polaznici");
+                    + ds + "wwwroot" + ds + "slike" + ds + "proizvodjaci");
 
                 if (!System.IO.Directory.Exists(dir))
                 {

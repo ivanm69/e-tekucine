@@ -35,6 +35,7 @@ app.UseSwagger();
 app.UseSwaggerUI(o =>
 {
     o.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
+    o.EnableTryItOutByDefault();
 });
 
 app.UseHttpsRedirection();

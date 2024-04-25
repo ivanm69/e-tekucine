@@ -42,25 +42,28 @@ export default function Proizvodi(){
     return (
 
         <Container>
-            <Link to={RoutesNames.PROIZVOD_NOVI} className="btn btn-success siroko">
+            <br/>
+            <Link to={RoutesNames.PROIZVOD_NOVI} class="btn bg-gradient-to-r from-red-900 to-purple-800  text-white font-medium py-3 px-10 rounded  flex flex-col items-center ">
+                
                 <IoIosAdd
                 size={25}
                 /> Dodaj
             </Link>
+            <br/>
             <Table striped bordered hover responsive>
                 <thead>
                     <tr>
-                        <th>Naziv</th>
-                        <th>Proizvodjac</th>
+                        <th class="font-serif ">Naziv</th>
+                        <th class="font-serif">Proizvodjac</th>
                         
-                        <th>Akcija</th>
+                        <th class="font-serif">Akcija</th>
                     </tr>
                 </thead>
                 <tbody>
                     {proizvodi && proizvodi.map((entitet,index)=>(
                         <tr key={index}>
-                            <td>{entitet.naziv}</td>
-                            <td>{entitet.proizvodjacNaziv}</td>
+                            <td class="font-serif">{entitet.naziv}</td>
+                            <td class="font-serif">{entitet.proizvodjacNaziv}</td>
                             
                             
                             <td className="sredina">

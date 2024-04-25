@@ -51,31 +51,34 @@ export default function Arome(){
 
     return (
         <Container>
-            <Link to={RoutesNames.AROMA_NOVI} className="btn btn-success siroko">
+            <br/>
+            <Link to={RoutesNames.AROMA_NOVI} class="btn bg-gradient-to-r from-red-900 to-purple-800  text-white font-medium py-3 px-10 rounded  flex flex-col items-center ">
                 <IoIosAdd
                 size={25}
                 /> Dodaj
             </Link>
+            <br/>
+            <br/>
             <Table striped bordered hover responsive>
                 <thead>
                     <tr>
-                        <th>Naziv</th>
-                        <th>Proizvod</th>
-                        <th>Vrsta</th>
-                        <th>Hladilo</th>
+                        <th class="font-serif">Naziv</th>
+                        <th class="font-serif">Proizvod</th>
+                        <th class="font-serif">Vrsta</th>
+                        <th class="font-serif">Hladilo</th>
                         
-                        <th>Akcija</th>
+                        <th class="font-serif">Akcija</th>
                     </tr>
                 </thead>
                 <tbody>
                     {arome && arome.map((aroma,index)=>(
                         <tr key={index}>
-                            <td>{aroma.naziv}</td>
-                            <td>{aroma.proizvodNaziv}</td>
+                            <td class="font-serif">{aroma.naziv}</td>
+                            <td class="font-serif">{aroma.proizvodNaziv}</td>
                             
-                            <td>{aroma.vrsta}</td>
+                            <td class="font-serif">{aroma.vrsta}</td>
                             
-                            <td>{aroma.hladilo}</td>
+                            <td class="font-serif">{aroma.hladilo}</td>
                             
                            
 

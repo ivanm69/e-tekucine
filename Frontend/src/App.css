@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .kursor{
   cursor: pointer;
 }
@@ -11,4 +15,4 @@
   color: wheat;
   font-size: 20px;
   text-align: center;
-}
+} 

@@ -39,11 +39,13 @@ export default function Proizvodjaci(){
     
     return (
 <Container>
-             <Link to={RoutesNames.PROIZVODJAC_NOVI} className="btn btn-success siroko">
+  <br/>
+             <Link to={RoutesNames.PROIZVODJAC_NOVI} class="btn bg-gradient-to-r from-red-900 to-purple-800  text-white font-medium py-3 px-10 rounded  flex flex-col items-center ">
                 <IoIosAdd
                 size={25}
                 /> Dodaj
             </Link>
+            <br/>
             <Row>
             { proizvodjaci && proizvodjaci.map((p) => (
            

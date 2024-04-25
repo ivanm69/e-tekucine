@@ -13,7 +13,7 @@ namespace Backend.Models
        [Required(ErrorMessage = "link obavezno")]
         string? Link,
 
-    string? Slika);
+        string? Slika);
 
     public record AromaDTORead(int Sifra, string? Naziv, string? ProizvodNaziv, string? Vrsta, bool? Hladilo);
 
