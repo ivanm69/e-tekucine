@@ -1,4 +1,4 @@
-import { Container, Form } from "react-bootstrap";
+import { Col, Container, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { RoutesNames } from "../../constants";
 import Service from "../../services/ProizvodjacService";
@@ -28,15 +28,19 @@ export default function ProizvodjaciDodaj(){
             link: podaci.get('link')
             
         });
+        
     }
-
+        
     return (
 
-        <Container>
+        <Container className='mt-4 text-yellow-500 font-serif font-medium'>
            <Form onSubmit={handleSubmit}>
+           
                 <InputText atribut='naziv' vrijednost='' />
                 <InputText atribut='link' vrijednost='' />
-                <Akcije odustani={RoutesNames.PROZIVODJAC_PREGLED} akcija='Dodaj Proizvodjac' />
+                <br/>
+                <Akcije odustani={RoutesNames.PROZIVODJAC_PREGLED} akcija='Dodaj Proizvodjaca' />
+               
            </Form>
         </Container>
 

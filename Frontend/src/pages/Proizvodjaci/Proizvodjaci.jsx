@@ -4,15 +4,17 @@ import Service from "../../services/ProizvodjacService";
 import { IoIosAdd } from "react-icons/io";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { RoutesNames } from "../../constants";
+import { App, RoutesNames } from "../../constants";
 import useError from "../../hooks/useError";
 import { Card } from "react-bootstrap";
 import nepoznato from '../../assets/nepoznato.jpg';
 import useLoading from "../../hooks/useLoading";
+import { confirm } from "../../components/Potvrdivanje";
 
 export default function Proizvodjaci(){
     const [proizvodjaci,setProizvodjaci] = useState();
     const navigate = useNavigate();
+    
     const { showLoading, hideLoading } = useLoading();
     const { prikaziError } = useError();
 
@@ -31,6 +33,7 @@ export default function Proizvodjaci(){
 
     async function obrisiProizvodjac(sifra){
         showLoading();
+        if (await confirm("Jeste li sigurni da zelite obrisati proizvod sa sifrom " + sifra + "?")) {
         const odgovor = await Service.obrisi('Proizvodjac',sifra);
         hideLoading();
         prikaziError(odgovor.podaci);
@@ -38,9 +41,11 @@ export default function Proizvodjaci(){
             dohvatiProizvodjace();
         }
     }
-     
+  }
     useEffect(()=>{
+      showLoading();
         dohvatiProizvodjace();
+        hideLoading();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
     function slika(proizvodjac){
@@ -62,13 +67,13 @@ export default function Proizvodjaci(){
             <Row>
             { proizvodjaci && proizvodjaci.map((p) => (
            
-           <Col key={p.sifra} sm={12} lg={3} md={3}>
+           <Col key={p.sifra} sm={12} lg={3} md={6}>
               <Card style={{ marginTop: '1rem' }}>
               <Card.Img variant="top" src={slika(p)} className="slika"/>
                 <Card.Body>
-                  <Card.Title>{p.naziv} {p.link}</Card.Title>
+                  <Card.Title>{p.naziv} </Card.Title>
                   <Card.Text>
-                    {p.email}
+                    {p.email}{p.link}
                   </Card.Text>
                   <Row>
                       <Col>

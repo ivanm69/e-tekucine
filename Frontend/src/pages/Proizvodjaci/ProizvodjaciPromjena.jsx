@@ -3,7 +3,7 @@ import Service from "../../services/ProizvodjacService";
 import {  Button, Col, Container, Form, Row,Image } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { RoutesNames } from "../../constants";
+import { App, RoutesNames } from "../../constants";
 import InputText from "../../components/InputText";
 import Akcije from "../../components/Akcije";
 import Cropper from 'react-cropper';
@@ -97,7 +97,7 @@ export default function ProizvodajciPromjeni(){
         showLoading();
         const base64 = slikaZaServer;
     
-        const odgovor = await Service.postaviSliku(routeParams.sifra, {Base64: base64.replace('data:image/jpg;base64,', '')});
+        const odgovor = await Service.postaviSliku(routeParams.sifra, {Base64: base64.replace('data:image/png;base64,', '')});
         if(!odgovor.ok){
           hideLoading();
           prikaziError(odgovor.podaci);
@@ -106,12 +106,13 @@ export default function ProizvodajciPromjeni(){
         setTrenutnaSlika(slikaZaServer);
         hideLoading();
       }
-
+<br/>
     return (
-        <Container >
-            <Row>
-                <Col key='1' sm={12}lg={6}md={6}>
+        <Container className='mt-2 text-yellow-500 font-serif font-medium'>
+            <Row  >
+                <Col key='1' sm={12}lg={6}md={6} >
            <Form onSubmit={handleSubmit}>
+<br/>
                     <InputText atribut='naziv' vrijednost={proizvodjac.naziv}  />
                     <InputText atribut='link' vrijednost={proizvodjac.link} />
                     <br/>
@@ -120,7 +121,7 @@ export default function ProizvodajciPromjeni(){
              <br/>
              <Row className='mb-4'>
               <Col key='1' sm={12} lg={6} md={12}>
-                <p className='form-label' class="text-indigo-500 font-medium text-lg ">Trenutna slika:</p><br/>
+                <p className='form-label' >Trenutna slika:</p><br/>
                 <Image
                   
                   

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Container, Table } from "react-bootstrap";
+import { confirm } from "../../components/Potvrdivanje";
 import { IoIosAdd } from "react-icons/io";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -7,16 +8,20 @@ import { useNavigate } from "react-router-dom";
 import Service from "../../services/ProizvodService";
 import { RoutesNames } from "../../constants";
 import useError from "../../hooks/useError";
+import useLoading from "../../hooks/useLoading";
 
 
 
 export default function Proizvodi(){
     const [proizvodi,setProizvode] = useState();
     let navigate = useNavigate(); 
+    const { showLoading, hideLoading } = useLoading();
     const { prikaziError } = useError();
 
     async function dohvatiProizvode(){
+        showLoading();
         const odgovor = await Service.get('Proizvod');
+        hideLoading();
         if(!odgovor.ok){
             prikaziError(odgovor.podaci);
             return;
@@ -25,12 +30,16 @@ export default function Proizvodi(){
     }
 
     async function obrisiProizvod(sifra) {
+        showLoading();
+        if (await confirm("Jeste li sigurni da zelite obrisati proizvod sa sifrom " + sifra + "?")) {
         const odgovor = await Service.obrisi('Proizvod',sifra);
+        hideLoading();
         prikaziError(odgovor.podaci);
         if (odgovor.ok){
             dohvatiProizvode();
         }
     }
+}
 
     useEffect(()=>{
         dohvatiProizvode();

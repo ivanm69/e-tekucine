@@ -4,7 +4,10 @@ import  {get,obrisi,dodaj,getBySifra,promjeni,dohvatiPorukeAlert, httpService, o
 async function postaviSliku(sifra, slika) {
     return await httpService.put('/Proizvodjac/postaviSliku/' + sifra, slika).then((res)=>{return obradiUspjeh(res);}).catch((e)=>{ return obradiGresku(e);});
   }
-
+  async function getStranicenje(stranica,uvjet){
+    return await httpService.get('/Prozivodjac/traziStranicenje/'+stranica + '?uvjet=' + uvjet)
+    .then((res)=>{return obradiUspjeh(res);}).catch((e)=>{ return obradiGresku(e);});
+  }
 
 export default{
     get,
@@ -13,5 +16,6 @@ export default{
     promjeni,
     getBySifra,
     dohvatiPorukeAlert,
-    postaviSliku
+    postaviSliku,
+    getStranicenje
 };

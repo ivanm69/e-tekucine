@@ -8,13 +8,19 @@ import {  RoutesNames } from "../../constants";
 import { useNavigate } from "react-router-dom";
 import { GrValidate } from "react-icons/gr";
 import useError from "../../hooks/useError";
+import { confirm } from "../../components/Potvrdivanje";
+import useLoading from "../../hooks/useLoading";
 
 export default function Arome(){
     const [arome,setArome] = useState();
     let navigate = useNavigate(); 
-   const{prikaziError}=useError();
+    const { showLoading, hideLoading } = useLoading();
+    const{prikaziError}=useError();
+
     async function dohvatiArome(){
+        showLoading();
         const odgovor = await Service.get('Aroma');
+        hideLoading();
         if(!odgovor.ok){
             prikaziError(odgovor.podaci);
             return;
@@ -24,13 +30,16 @@ export default function Arome(){
     }
 
     async function obrisiAroma(sifra) {
+        showLoading();
+        if (await confirm("Jeste li sigurni da zelite obrisati proizvod sa sifrom " + sifra + "?")) {
         const odgovor = await Service.obrisi('Aroma',sifra);
+        hideLoading();
         prikaziError(odgovor.podaci);
         if (odgovor.ok){
             dohvatiArome();
         }
     }
-
+    }
     useEffect(()=>{
         dohvatiArome();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -78,7 +87,11 @@ export default function Arome(){
                             
                             <td class="font-serif">{aroma.vrsta}</td>
                             
-                            <td class="font-serif">{aroma.hladilo}</td>
+                            <td class="font-serif">{aroma.hladilo}<GrValidate 
+                            size={30} 
+                            color={hladilo(aroma)}
+                            title={hladiloTitle(aroma)}
+                            /></td>
                             
                            
 
@@ -87,11 +100,7 @@ export default function Arome(){
                                     <Button 
                                         variant='primary'
                                         onClick={()=>{navigate(`/arome/${aroma.sifra}`)}}
-                                    >  <GrValidate 
-                            size={30} 
-                            color={hladilo(aroma)}
-                            title={hladiloTitle(aroma)}
-                            />
+                                    >  
                             
                                         <FaEdit 
                                     size={25}
@@ -100,6 +109,7 @@ export default function Arome(){
                                
                                 
                                     &nbsp;&nbsp;&nbsp;
+                                    
                                     <Button
                                         variant='danger'
                                         onClick={() => obrisiAroma(aroma.sifra)}

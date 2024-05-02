@@ -103,10 +103,10 @@ export default function ProizvodePromjeni() {
   }
 
   return (
-    <Container className='mt-4'>
+    <Container className='mt-4 text-yellow-500 font-serif font-medium'>
       
         
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit} >
             <InputText atribut='naziv' vrijednost={proizvod.naziv} />
             
               

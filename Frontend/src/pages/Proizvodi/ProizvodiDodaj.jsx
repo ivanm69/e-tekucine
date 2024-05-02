@@ -1,4 +1,4 @@
-import { Container, Form} from 'react-bootstrap';
+import { Col, Container, Form} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Service from '../../services/ProizvodService';
@@ -73,12 +73,12 @@ export default function ProzivodeDodaj() {
   }
 
   return (
-    <Container className='mt-4'>
-      <Form onSubmit={handleSubmit}>
+    <Container className='mt-4 text-yellow-500 font-serif font-medium'>
+      <Form onSubmit={handleSubmit} >
+      <Col >
+        <InputText  atribut='naziv' vrijednost=''/>
 
-        <InputText atribut='naziv' vrijednost='' />
-
-        
+        </Col>
 
         <Form.Group className='mb-3' controlId='proizvodjac'>
           <Form.Label>Proizvodjac</Form.Label>

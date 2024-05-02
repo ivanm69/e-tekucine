@@ -73,7 +73,7 @@ export default function ProzivodeDodaj() {
   }
 
   return (
-    <Container className='mt-4'>
+    <Container className='mt-4 text-yellow-500 font-serif font-medium'>
       <Form onSubmit={handleSubmit}>
 
         <InputText atribut='naziv' vrijednost='' />
@@ -97,7 +97,7 @@ export default function ProzivodeDodaj() {
         <InputCheckbox atribut='hladilo'vrijednost=""/>
 
         
-        <Akcije odustani={RoutesNames.AROMA_PREGLED} akcija='Dodaj proizvod' /> 
+        <Akcije odustani={RoutesNames.AROMA_PREGLED} akcija='Dodaj aromu' /> 
       </Form>
     </Container>
   );

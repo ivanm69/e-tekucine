@@ -90,7 +90,7 @@ export default function AromePromjeni() {
   }
 
   return (
-    <Container className='mt-4'>
+    <Container className='mt-4 text-yellow-500 font-serif font-medium'>
       <Form onSubmit={handleSubmit}>
         <InputText atribut='naziv' vrijednost={aroma.naziv} />
        
@@ -110,8 +110,9 @@ export default function AromePromjeni() {
           </Form.Select>
         </Form.Group>
         <InputText atribut='vrsta' vrijednost={aroma.vrsta} />
+        <br/>
         <InputCheckbox atribut='hladilo' vrijednost={aroma.hladilo}/>
-       
+       <br/>
         <Akcije odustani={RoutesNames.AROMA_PREGLED} akcija='Promjeni aroma' /> 
       </Form>
     </Container>
