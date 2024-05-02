@@ -69,6 +69,32 @@ namespace Backend.Controllers
                 return BadRequest(e.Message);
             }
         }
+        [HttpGet]
+        [Route("traziStranicenje/{stranica}")]
+        public IActionResult TraziPolaznikStranicenje(int stranica, string uvjet = "")
+        {
+            var poStranici = 4;
+            uvjet = uvjet.ToLower();
+            try
+            {
+                var proizvodjaci = _context.Proizvodjaci
+                   .Where(p => EF.Functions.Like(p.Naziv.ToLower(), "%" + uvjet + "%")
+                               || EF.Functions.Like(p.Link.ToLower(), "%" + uvjet + "%"))
+                   .Skip((poStranici * stranica) - poStranici)
+                   .Take(poStranici)
+                   .OrderBy(p => p.Naziv)
+                   .ToList();
+
+
+                return new JsonResult(_mapper.MapReadList(proizvodjaci));
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
     }
 }
 
