@@ -19,6 +19,8 @@ namespace Backend.Data
 
         public DbSet<Proizvod> Proizvodi { get; set; }
 
+        public DbSet<Operater> Operateri { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
