@@ -32,7 +32,7 @@ namespace Backend.Controllers
             }
 
 
-            Operater? operBaza = _context.Operateri
+            var operBaza = _context.Operateri
                    .Where(p => p.Email!.Equals(operater.email))
                    .FirstOrDefault();
 
@@ -52,7 +52,7 @@ namespace Backend.Controllers
 
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes("moj tajni kljuc");
+            var key = Encoding.UTF8.GetBytes("moj tajni kljuc koji je najbolji kljuc na svijetu i najljepsi");
 
 
             var tokenDescriptor = new SecurityTokenDescriptor
