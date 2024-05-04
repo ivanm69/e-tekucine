@@ -11,7 +11,10 @@ export const RoutesNames = {
 
     AROMA_PREGLED:'/arome',
     AROMA_NOVI:'/arome/dodaj',
-    AROMA_PROMJENI:'/arome/:sifra'
+    AROMA_PROMJENI:'/arome/:sifra',
+
+    LOGIN: '/login',
+    NADZORNA_PLOCA: '/nadzornaploca'
 };
 
 export const App={

@@ -7,21 +7,24 @@ import Akcije from '../../components/Akcije';
 import InputCheckbox from '../../components/InputCheckbox';
 import { useEffect, useState } from 'react';
 import useError from '../../hooks/useError';
+import useLoading from '../../hooks/useLoading';
 
 export default function ProzivodeDodaj() {
   const navigate = useNavigate();
 
   const [proizvodi, setProizvodi] = useState([]);
   const [proizvodSifra, setProizvodSifra] = useState(0);
-
+  const { showLoading, hideLoading } = useLoading();
   const [arome, setAroma] = useState([]);
   const [aromaSifra, setAromaSifra] = useState(0);
   const { prikaziError } = useError();
   async function dohvatiProizvod(){
     
     const odgovor = await Service.get('Proizvod');
+    
     if(!odgovor.ok){
       prikaziError(odgovor.podaci);
+      
       return;
     }
     setProizvodi(odgovor.podaci);
@@ -29,9 +32,11 @@ export default function ProzivodeDodaj() {
   }
 
   async function dohvatiAroma(){
+    
     const odgovor = await Service.get('Aroma');
     if(!odgovor.ok){
       prikaziError(odgovor.podaci);
+      
         return;
     }
     setAroma(odgovor.podaci);
@@ -39,16 +44,21 @@ export default function ProzivodeDodaj() {
   }
 
   async function ucitaj(){
+    
     await dohvatiProizvod();
     await dohvatiAroma();
+    
   }
 
   useEffect(()=>{
+    
     ucitaj();
+   
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
   async function dodaj(e) {
+    
     const odgovor = await Service.dodaj('Aroma',e);
     if(odgovor.ok){
       navigate(RoutesNames.AROMA_PREGLED);

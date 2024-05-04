@@ -6,6 +6,7 @@ import { RoutesNames } from '../../constants';
 import InputText from '../../components/InputText';
 import Akcije from '../../components/Akcije';
 import useError from '../../hooks/useError';
+import useLoading from '../../hooks/useLoading';
 
 
 export default function ProizvodePromjeni() {
@@ -18,13 +19,16 @@ export default function ProizvodePromjeni() {
 
   const [arome, setArome] = useState([]);
   const [sifraAroma, setSifraAroma] = useState(0);
+  const { showLoading, hideLoading } = useLoading();
   const { prikaziError } = useError();
   
 
   async function dohvatiProizvod() {
+    showLoading();
     const odgovor = await Service.getBySifra('Proizvod',routeParams.sifra);
     if(!odgovor.ok){
       prikaziError(odgovor.podaci);
+      hideLoading();
       return;
     }
     let proizvod = odgovor.podaci;
@@ -40,9 +44,11 @@ export default function ProizvodePromjeni() {
  
 
   async function dohvatiProivodjac() {
+    
     const odgovor =  await Service.get('Proizvodjac');
     if(!odgovor.ok){
       prikaziError(odgovor.podaci);
+      
       return;
     }
     setProizvodjaci(odgovor.podaci);
@@ -51,9 +57,11 @@ export default function ProizvodePromjeni() {
   }
 
   async function dohvatiArome() {
+   
     const odgovor =  await Service.get('Aroma');
     if(!odgovor.ok){
       prikaziError(odgovor.podaci);
+      
       return;
     }
     setArome(odgovor.podaci);
@@ -63,22 +71,28 @@ export default function ProizvodePromjeni() {
  
 
   async function dohvatiInicijalnePodatke() {
+    
     await dohvatiProivodjac();
     await dohvatiArome();
     await dohvatiProizvod();
+   
     
   }
 
 
   useEffect(() => {
+    
     dohvatiInicijalnePodatke();
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function promjeni(e) {
+   
     const odgovor = await Service.promjeni('Proizvod',routeParams.sifra, e);
     if(odgovor.ok){
       navigate(RoutesNames.PROZIVOD_PREGLED);
+      
       return;
     }
     prikaziError(odgovor.podaci);

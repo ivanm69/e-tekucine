@@ -30,10 +30,10 @@ export default function Arome(){
     }
 
     async function obrisiAroma(sifra) {
-        showLoading();
+        
         if (await confirm("Jeste li sigurni da zelite obrisati proizvod sa sifrom " + sifra + "?")) {
         const odgovor = await Service.obrisi('Aroma',sifra);
-        hideLoading();
+        
         prikaziError(odgovor.podaci);
         if (odgovor.ok){
             dohvatiArome();
@@ -47,7 +47,7 @@ export default function Arome(){
 
     function hladilo(aroma){
         if (aroma.hladilo==null) return 'gray';
-        if(aroma.hladilo) return 'yellow';
+        if(aroma.hladilo) return 'green';
         return 'red';
     }
 

@@ -16,6 +16,8 @@
     "@tsparticles/react": "^3.0.0",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
+    "highcharts": "^11.4.1",
+    "highcharts-react-official": "^3.2.1",
     "moment": "^2.30.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",

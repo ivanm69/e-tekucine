@@ -16,9 +16,11 @@ import AromeDodaj from './pages/Arome/AromeDodaj'
 import AromePromjena from './pages/Arome/AromePromjena'
 import ErrorModal from './components/ErrorModal'
 import useError from './hooks/useError'
-
+import LoadingSpinner from './components/LoadingSpinner'
 import ParticleBack from './components/Particle'
-
+import Login from "./pages/Login"
+import useAuth from "./hooks/useAuth"
+import NadzornaPloca from './pages/NadzornaPloca'
 
 
 
@@ -27,13 +29,19 @@ import ParticleBack from './components/Particle'
 function App() {
   
   const { errors, prikaziErrorModal, sakrijError } = useError();
+  const { isLoggedIn } = useAuth();
   return (
     <>
    <ParticleBack/>
-     
+     <LoadingSpinner/>
      <ErrorModal show={prikaziErrorModal} errors={errors} onHide={sakrijError} />
    <NavBar />
    <Routes>
+   <Route path={RoutesNames.HOME} element={<Pocetna />} />
+      {isLoggedIn ? (
+        <>
+        <Route path={RoutesNames.NADZORNA_PLOCA} element={<NadzornaPloca />} />
+
   <Route path={RoutesNames.HOME} element={<Pocetna/>}/>
   <Route path={RoutesNames.PROZIVOD_PREGLED} element={<Proizvodi/>}/>
   <Route path={RoutesNames.PROIZVOD_NOVI} element={<ProizvodiDodaj/>}/>
@@ -44,11 +52,14 @@ function App() {
   <Route path={RoutesNames.AROMA_PREGLED}element={<Arome/>}/>
   <Route path={RoutesNames.AROMA_NOVI}element={<AromeDodaj/>}/>
   <Route path={RoutesNames.AROMA_PROMJENI}element={<AromePromjena/>}/>
-      </Routes>           
-      
-      
-       
-    </> 
+  </>
+        ) : (
+          <>
+            <Route path={RoutesNames.LOGIN} element={<Login />} />
+          </>
+        )}
+      </Routes>
+    </>
   )
 }
 

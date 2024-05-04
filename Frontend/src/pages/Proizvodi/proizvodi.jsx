@@ -30,10 +30,11 @@ export default function Proizvodi(){
     }
 
     async function obrisiProizvod(sifra) {
-        showLoading();
+        
         if (await confirm("Jeste li sigurni da zelite obrisati proizvod sa sifrom " + sifra + "?")) {
+        
         const odgovor = await Service.obrisi('Proizvod',sifra);
-        hideLoading();
+        
         prikaziError(odgovor.podaci);
         if (odgovor.ok){
             dohvatiProizvode();

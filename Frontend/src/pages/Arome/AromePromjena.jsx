@@ -7,13 +7,14 @@ import InputText from '../../components/InputText';
 import Akcije from '../../components/Akcije';
 import InputCheckbox from '../../components/InputCheckbox';
 import useError from '../../hooks/useError';
+import useLoading from '../../hooks/useLoading';
 
 
 export default function AromePromjeni() {
   const navigate = useNavigate();
   const routeParams = useParams();
   const [aroma, setAroma] = useState({});
-
+  
   const [proizvodi, setProizvodi] = useState([]);
   const [proizvodSifra, setProizvodSifra] = useState(0);
   const { prikaziError } = useError();
@@ -21,9 +22,11 @@ export default function AromePromjeni() {
 
 
   async function dohvatiArome() {
+    
     const odgovor = await Service.getBySifra('Aroma',routeParams.sifra);
     if(!odgovor.ok){
       prikaziError(odgovor.podaci);
+      
       return;
     } 
     
@@ -40,9 +43,11 @@ export default function AromePromjeni() {
  
 
   async function dohvatiProizvod() {
+  
     const odgovor =  await Service.get('Proizvod');
     if(!odgovor.ok){
       prikaziError(odgovor.podaci);
+      
       return;
     }
     setProizvodi(odgovor.podaci);
@@ -52,20 +57,26 @@ export default function AromePromjeni() {
 
 
   async function dohvatiInicijalnePodatke() {
+    
     await dohvatiProizvod();
     await dohvatiArome();
+    
     
   }
 
   useEffect(() => {
+    
     dohvatiInicijalnePodatke();
+   
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function promjeni(e) {
+
     const odgovor = await Service.promjeni('Aroma',routeParams.sifra, e);
     if(odgovor.ok){
       navigate(RoutesNames.AROMA_PREGLED);
+     
       return;
     }
     prikaziError(odgovor.podaci);

@@ -24,12 +24,12 @@ export default function ProizvodajciPromjeni(){
     const routeParams = useParams();
    const navigate = useNavigate();
     const { prikaziError } = useError();
-    const { showLoading, hideLoading } = useLoading();
+   
 
     async function dohvatiProizvodjac(){
-        showLoading();
+        
         const odgovor = await Service.getBySifra('Proizvodjac',routeParams.sifra)
-        hideLoading();
+      
         if(!odgovor.ok){
             prikaziError(odgovor.podaci);
             navigate(RoutesNames.PROZIVODJAC_PREGLED);
@@ -49,9 +49,9 @@ export default function ProizvodajciPromjeni(){
     },[]);
 
     async function promjeniProizvodjac(proizvodjac){
-        showLoading();
+        
         const odgovor = await Service.promjeni('Proizvodjac',routeParams.sifra,proizvodjac);
-        hideLoading();
+       
         if(odgovor.ok){
           navigate(RoutesNames.PROZIVODJAC_PREGLED);
           return;
@@ -94,17 +94,17 @@ export default function ProizvodajciPromjeni(){
       }
     
       async function spremiSliku() {
-        showLoading();
+        
         const base64 = slikaZaServer;
     
         const odgovor = await Service.postaviSliku(routeParams.sifra, {Base64: base64.replace('data:image/png;base64,', '')});
         if(!odgovor.ok){
-          hideLoading();
+          
           prikaziError(odgovor.podaci);
         }
 
         setTrenutnaSlika(slikaZaServer);
-        hideLoading();
+        
       }
 <br/>
     return (

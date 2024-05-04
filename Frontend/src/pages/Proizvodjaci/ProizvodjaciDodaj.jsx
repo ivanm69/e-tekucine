@@ -5,16 +5,20 @@ import Service from "../../services/ProizvodjacService";
 import InputText from "../../components/InputText";
 import Akcije from "../../components/Akcije";
 import useError from "../../hooks/useError";
+import useLoading from "../../hooks/useLoading";
 
 
 export default function ProizvodjaciDodaj(){
     const navigate = useNavigate();
+    const { showLoading, hideLoading } = useLoading();
     const { prikaziError } = useError();
 
     async function dodajProizvodjac(proizvodjac){
+        showLoading();
         const odgovor = await Service.dodaj('Proizvodjac',proizvodjac);
         if(odgovor.ok){
           navigate(RoutesNames.PROZIVODJAC_PREGLED);
+          hideLoading();
           return
         }
         prikaziError(odgovor.podaci);

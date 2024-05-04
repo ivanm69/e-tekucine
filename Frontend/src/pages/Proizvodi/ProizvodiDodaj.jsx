@@ -6,6 +6,7 @@ import { RoutesNames } from '../../constants';
 import InputText from '../../components/InputText';
 import Akcije from '../../components/Akcije';
 import useError from '../../hooks/useError';
+import useLoading from '../../hooks/useLoading';
 
 
 
@@ -18,12 +19,16 @@ export default function ProzivodeDodaj() {
 
   const [arome, setAroma] = useState([]);
   const [aromaSifra, setAromaSifra] = useState(0);
+  
   const { prikaziError } = useError();
+  
+  
   async function dohvatiProizvodjac(){
     
     const odgovor = await Service.get('Proizvodjac');
     if(!odgovor.ok){
       prikaziError(odgovor.podaci);
+      
       return;
     }
     setProizvodjaci(odgovor.podaci);
@@ -31,9 +36,11 @@ export default function ProzivodeDodaj() {
   }
 
   async function dohvatiAroma(){
+   
     const odgovor = await Service.get('Aroma');
     if(!odgovor.ok){
       prikaziError(odgovor.podaci);
+      
         return;
     }
     setAroma(odgovor.podaci);
@@ -41,19 +48,25 @@ export default function ProzivodeDodaj() {
   }
 
   async function ucitaj(){
+    
     await dohvatiProizvodjac();
     await dohvatiAroma();
+   
   }
 
   useEffect(()=>{
+    
     ucitaj();
+   
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
   async function dodaj(e) {
+    
     const odgovor = await Service.dodaj('Proizvod',e);
     if(odgovor.ok){
       navigate(RoutesNames.PROZIVOD_PREGLED);
+      
       return
     }
     prikaziError(odgovor.podaci);
