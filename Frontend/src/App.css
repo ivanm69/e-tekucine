@@ -26,3 +26,42 @@
   align-items: center;
   justify-content: center;
 }
+
+ 
+  
+ 
+  
+  
+  @media (min-width: 1200px) {
+  .hero-item {
+      max-width: 33%;
+      height: 70vh;
+    }
+  
+  .hero-image-container {
+      height: 100%;
+    }
+  
+  .hero-image {
+      max-height: auto;
+    }
+  }
+  
+  @media (min-width: 1600px) {
+  .hero-item {
+     
+      max-width: 35%;
+      height: 70vh;
+    }
+  
+  .hero-image-container {
+      height: 100%;
+    }
+  
+  .hero-image {
+      
+      max-height: auto;
+    }
+  }
+ 
+ 
