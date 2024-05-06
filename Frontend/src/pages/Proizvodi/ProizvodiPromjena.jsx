@@ -6,7 +6,7 @@ import { RoutesNames } from '../../constants';
 import InputText from '../../components/InputText';
 import Akcije from '../../components/Akcije';
 import useError from '../../hooks/useError';
-import useLoading from '../../hooks/useLoading';
+
 
 
 export default function ProizvodePromjeni() {
@@ -19,16 +19,15 @@ export default function ProizvodePromjeni() {
 
   const [arome, setArome] = useState([]);
   const [sifraAroma, setSifraAroma] = useState(0);
-  const { showLoading, hideLoading } = useLoading();
   const { prikaziError } = useError();
   
 
   async function dohvatiProizvod() {
-    showLoading();
+    
     const odgovor = await Service.getBySifra('Proizvod',routeParams.sifra);
     if(!odgovor.ok){
       prikaziError(odgovor.podaci);
-      hideLoading();
+      
       return;
     }
     let proizvod = odgovor.podaci;
